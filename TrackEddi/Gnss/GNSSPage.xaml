@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:local="clr-namespace:TrackEddi"
+             xmlns:gnns="clr-namespace:TrackEddi.Gnss"
+             x:DataType="gnns:GNNSPage" 
+             x:Class="TrackEddi.Gnss.GNNSPage"
+             Title="GNSS-Daten"
+             x:Name="mypage"
+             BackgroundColor="DarkGray">
+   <ContentPage.Resources>
+      <ResourceDictionary>
+         <Style x:Key="MyLabel1" TargetType="Label">
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="HorizontalOptions" Value="Start"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Padding" Value="0,5,0,5"/>
+            <Setter Property="Grid.Column" Value="0"/>
+         </Style>
+         <Style x:Key="MyLabel2" TargetType="Label">
+            <Setter Property="TextColor" Value="Blue"/>
+            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="HorizontalOptions" Value="Start"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Padding" Value="10,5,5,5"/>
+            <Setter Property="Grid.Column" Value="1"/>
+         </Style>
+         <Style x:Key="SatHeader" TargetType="Label">
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="HorizontalOptions" Value="Start"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Padding" Value="2"/>
+         </Style>
+         <Style x:Key="SatTable" TargetType="Label">
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="HorizontalOptions" Value="Start"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Padding" Value="2,0,2,0"/>
+         </Style>
+      </ResourceDictionary>
+   </ContentPage.Resources>
+
+   <ContentPage.Content>
+      <ScrollView Orientation="Vertical" Margin="10">
+         <Grid ColumnDefinitions="45*,55*" 
+               RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,auto,400">
+            <Label Grid.Row="0" Text="Hardware:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="0" Text="{Binding GnssHardwareModelName}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="1" Text="Status:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="1" Text="{Binding GnssStatusOn}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="2" Text="Fix-Zeit:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="2" Text="{Binding GnssFixTime}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="3" Text="Has Antenna Info:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="3" Text="{Binding HasAntennaInfo}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="4" Text="Antenna Infos:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="4" Text="{Binding AntennaInfos}" Style="{StaticResource MyLabel2}"/>
+
+            <ScrollView Orientation="Vertical" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
+               <ScrollView Orientation="Horizontal">
+                  <Editor x:Name="antennaInfos"  
+                             BackgroundColor="White" 
+                             TextColor="Black"
+                             AutoSize="TextChanges"
+                             IsReadOnly="True"
+                             IsSpellCheckEnabled="False"
+                             IsTextPredictionEnabled="False"
+                             FontSize="Medium"/>
+               </ScrollView>
+            </ScrollView>
+
+            <Label Grid.Row="6" Text="Has Measurements:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="6" Text="{Binding HasMeasurements}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="7" Text="Has Navigation Messages:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="7" Text="{Binding HasNavigationMessages}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="8" Grid.ColumnSpan="2" Text="Satelliten:" Style="{StaticResource MyLabel1}"/>
+
+            <ListView x:Name="ListViewSat" Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2"
+                      android:ListView.IsFastScrollEnabled="true"
+                      CachingStrategy="RecycleElement"
+                      SelectionMode="None"
+                      VerticalScrollBarVisibility="Always"
+                      HasUnevenRows="True"
+                      WidthRequest="310"
+                      SeparatorColor="Black"
+                      BackgroundColor="LightYellow">
+               <ListView.Header>
+                  <Grid RowDefinitions="auto"
+                        ColumnDefinitions="25,70,15,50,75,70"
+                        BackgroundColor="LightGray"
+                        Margin="0"
+                        Padding="2">
+                     <Label Grid.Column="0" Text="ID" Style="{StaticResource SatHeader}"/>
+                     <Label Grid.Column="1" Text="System" Style="{StaticResource SatHeader}"/>
+                     <Label Grid.Column="2" Text="E" Style="{StaticResource SatHeader}"/>
+                     <Label Grid.Column="3" Text="dBHz"  Style="{StaticResource SatHeader}"/>
+                     <Label Grid.Column="4" Text="Pos" Style="{StaticResource SatHeader}"/>
+                     <Label Grid.Column="5" Text="MHz" Style="{StaticResource SatHeader}"/>
+                  </Grid>
+               </ListView.Header>
+               <ListView.ItemTemplate>
+                  <DataTemplate x:DataType="gnns:SatDataItem">
+                     <ViewCell>
+                        <Grid RowDefinitions="auto"
+                              ColumnDefinitions="25,70,15,50,75,70"
+                              Margin="0"
+                              Padding="2">
+                           <Label Grid.Column="0" Text="{Binding SvID}" Style="{StaticResource SatTable}" HorizontalOptions="End"/>
+                           <Label Grid.Column="1" Text="{Binding ConstellationType}" Style="{StaticResource SatTable}">
+                              <Label.BackgroundColor>
+                                 <Binding Path="UsedInFix">
+                                    <Binding.Converter>
+                                       <local:BoolToObjectConverter x:TypeArguments="Color"
+                                                      TrueObject="LightGreen"
+                                                      FalseObject="#FFA0A0" />
+                                    </Binding.Converter>
+                                 </Binding>
+                              </Label.BackgroundColor>
+                           </Label>
+
+                           <Label Grid.Column="2" Style="{StaticResource SatTable}" TextColor="Red" HorizontalOptions="Center">
+                              <Label.Text>
+                                 <Binding Path="HasEphemerisData">
+                                    <Binding.Converter>
+                                       <local:BoolToObjectConverter x:TypeArguments="x:String" TrueObject="X" FalseObject="-" />
+                                    </Binding.Converter>
+                                 </Binding>
+                              </Label.Text>
+                           </Label>
+
+                           <Label Grid.Column="3" Text="{Binding BasebandCn0DbHz}" Style="{StaticResource SatTable}" TextColor="DarkViolet"/>
+                           <Label Grid.Column="4" Text="{Binding Position}" Style="{StaticResource SatTable}" TextColor="Green"/>
+                           <Label Grid.Column="5" Text="{Binding CarrierFrequencyHz}" Style="{StaticResource SatTable}" TextColor="Orange"/>
+
+                        </Grid>
+                     </ViewCell>
+                  </DataTemplate>
+               </ListView.ItemTemplate>
+            </ListView>
+
+         </Grid>
+      </ScrollView>
+   </ContentPage.Content>
+</ContentPage>

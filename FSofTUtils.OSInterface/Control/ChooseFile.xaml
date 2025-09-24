@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:FSofTUtils.OSInterface;assembly=FSofTUtils.OSInterface"
+             xmlns:ctrl="clr-namespace:FSofTUtils.OSInterface.Control"
+             xmlns:storage="clr-namespace:FSofTUtils.OSInterface.Storage"
+             x:DataType="ctrl:ChooseFile"
+             x:Class="FSofTUtils.OSInterface.Control.ChooseFile"
+             x:Name="this"
+             BackgroundColor="White">
+   <ContentView.Resources>
+
+      <ctrl:ChooseFileBool2ImageConverter x:Key="bool2img" />
+      
+      <Style x:Key="MyButton" TargetType="Border">
+         <Setter Property="WidthRequest" Value="25"/>
+         <Setter Property="HeightRequest" Value="25"/>
+         <Setter Property="VerticalOptions" Value="Center"/>
+         <Setter Property="Padding" Value="4"/>
+         <Setter Property="BackgroundColor" Value="LightGray"/>
+         <Setter Property="Stroke" Value="DarkGray"/>
+         <Setter Property="StrokeShape" Value="RoundRectangle 5,5,5,5"/>
+         <Setter Property="Shadow">
+            <Setter.Value>
+               <Shadow Brush="Gray" Opacity="0.8" Radius="20" Offset="5,5" />
+            </Setter.Value>
+         </Setter>
+      </Style>
+      
+      <Style x:Key="MyButtonImage" TargetType="Image">
+         <Setter Property="HorizontalOptions" Value="Fill"/>
+         <Setter Property="VerticalOptions" Value="Fill"/>
+         <Setter Property="Aspect" Value="AspectFit"/>
+      </Style>
+
+   </ContentView.Resources>
+
+   <ContentView.Content>
+      <Grid>
+         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+         </Grid.RowDefinitions>
+
+         <Border Stroke="Black"
+                Grid.Row="0" Grid.Column="0"
+                Margin="5,0,5,0"
+                Padding="5"
+                BackgroundColor="{Binding BackcolorMainText, Source={x:Reference this}}">
+            <StackLayout Orientation="Horizontal">
+               <Border Style="{StaticResource MyButton}">
+                  <Image Style="{StaticResource MyButtonImage}"
+                         Source="{local:ImageResource FSofTUtils.OSInterface.Resource.Up.png}"/>
+                  <Border.GestureRecognizers>
+                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Up_Tapped"/>
+                  </Border.GestureRecognizers>
+               </Border>
+
+               <StackLayout Orientation="Vertical"
+                            Margin="5,0,0,0">
+                  <ScrollView Orientation="Horizontal" Margin="5">
+                     <Label x:Name="labelPath" 
+                            Text="{Binding PathName}" 
+                            Margin="0"
+                            FontSize="{Binding FontSize, Source={x:Reference this}}"
+                            TextColor="{Binding ColorMainText, Source={x:Reference this}}" />
+                  </ScrollView>
+                  <Label Text="{Binding PathInfo}" 
+                         HorizontalOptions="Start"
+                         Padding="5,3,5,3"
+                         FontSize="{Binding InfoFontSize, Source={x:Reference this}}"
+                         TextColor="{Binding ColorInfoText, Source={x:Reference this}}"
+                         BackgroundColor="{Binding BackcolorInfoText, Source={x:Reference this}}"
+                         LineBreakMode="CharacterWrap" />
+               </StackLayout>
+            </StackLayout>
+         </Border>
+
+         <ListView x:Name="listViewDir"
+                   Grid.Row="1" Grid.Column="0"
+                   HorizontalOptions="Fill"
+                   Margin="5"
+                   SeparatorVisibility="Default" 
+                   SelectionMode="Single"
+                   HasUnevenRows="True" 
+                   SeparatorColor="{Binding ListViewSeparatorColor, Source={x:Reference this}}"
+                   ItemTapped="listViewDir_ItemTapped"  
+                   ItemSelected="listViewDir_ItemSelected">
+            <ListView.ItemTemplate>
+               <DataTemplate x:DataType="ctrl:ChooseFile">
+                  <ViewCell Tapped="viewCell_Tapped">
+                     <StackLayout Orientation="Horizontal"
+                                  Padding="3,5,3,5"
+                                  VerticalOptions="Start"
+                                  HorizontalOptions="Fill"
+                                  BackgroundColor="{Binding ListViewItemColor, Source={x:Reference this}}">
+                        <Image x:Name="image"
+                               Source="{Binding IsDirectory, Converter={StaticResource bool2img}, ConverterParameter={x:Reference this}, x:DataType=storage:DirItem}"
+                               HorizontalOptions="Start"
+                               VerticalOptions="Center"
+                               WidthRequest="{Binding FontSize, Source={x:Reference this}}"
+                               HeightRequest="{Binding FontSize, Source={x:Reference this}}"
+                               Margin="5,0,5,0"/>
+                        <StackLayout Orientation="Vertical"
+                                     VerticalOptions="CenterAndExpand"
+                                     HorizontalOptions="FillAndExpand"
+                                     Spacing="0">
+                           <Label Text="{Binding Name, x:DataType=storage:DirItem}"
+                                  HorizontalOptions="Fill"
+                                  VerticalOptions="Center"
+                                  Padding="5,0,5,0"
+                                  FontSize="{Binding FontSize, Source={x:Reference this}}"
+                                  TextColor="{Binding ColorMainText, Source={x:Reference this}}"
+                                  BackgroundColor="{Binding BackcolorMainText, Source={x:Reference this}}"
+                                  LineBreakMode="CharacterWrap"/>
+
+                           <Label Text="{Binding InfoText, x:DataType=storage:DirItem}"
+                                  HorizontalOptions="Fill"
+                                  VerticalOptions="Center"
+                                  Padding="5,0,5,0"
+                                  FontSize="{Binding InfoFontSize, Source={x:Reference this}}"
+                                  TextColor="{Binding ColorInfoText, Source={x:Reference this}}"
+                                  BackgroundColor="{Binding BackcolorInfoText, Source={x:Reference this}}"
+                                  LineBreakMode="CharacterWrap"/>
+                        </StackLayout>
+                     </StackLayout>
+                  </ViewCell>
+               </DataTemplate>
+            </ListView.ItemTemplate>
+         </ListView>
+
+         <StackLayout x:Name="entryDestinationStack" 
+                      Grid.Row="2" Grid.Column="0"
+                      Orientation="Horizontal" 
+                      Margin="5">
+            <Entry x:Name="entryDestinationfile"
+                   Margin="0,0,5,0"                  
+                   Placeholder="Dateiname"
+                   Text=""
+                   TextColor="DarkBlue"
+                   BackgroundColor="LightGray"
+                   IsSpellCheckEnabled="false"
+                   IsTextPredictionEnabled="false"
+                   Keyboard="Plain"
+                   ReturnType="Done"
+                   HorizontalOptions="FillAndExpand"
+                   Completed="entryDestinationfile_Completed"
+                   TextChanged="entryDestinationfile_TextChanged"/>
+            <Button x:Name="buttonOK" 
+                    Text="OK" 
+                    IsEnabled="False"
+                    Clicked="buttonOK_Clicked"
+                    WidthRequest="50"
+                    BackgroundColor="Gray"
+                    TextColor="Black" />
+         </StackLayout>
+
+         <Button x:Name="buttonFolderOK" 
+                 Grid.Row="3" Grid.Column="0"
+                 Margin="5"
+                 Text="Verzeichnis verwenden" 
+                 IsEnabled="True"
+                 Clicked="buttonFolderOK_Clicked"
+                 BackgroundColor="Gray"
+                 TextColor="Black" />
+
+      </Grid>
+   </ContentView.Content>
+</ContentView>

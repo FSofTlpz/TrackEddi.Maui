@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <NoWarn>IDE1006</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="ms\**" />
+    <Compile Remove="Stuff\**" />
+    <EmbeddedResource Remove="ms\**" />
+    <EmbeddedResource Remove="Stuff\**" />
+    <None Remove="ms\**" />
+    <None Remove="Stuff\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="License.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="OptimizedReader\FilePart.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="!clear.cmd" />
+    <None Remove="ClipperLib\clipper_ver6.4.zip" />
+    <None Remove="Files\Typ\SkiaTyp.zip" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="9.0.7" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+  <PropertyGroup>
+    <AssemblyTitle>GarminCore-DLL</AssemblyTitle>
+    <Description>.NET-Bibliothek zur Verwendung von Garmin-Dateien</Description>
+    <Company>FSofT</Company>
+    <Product>Garmin-Interface</Product>
+    <Copyright>Copyright © FSofT 2011</Copyright>
+    <InformationalVersion>17.12.2022</InformationalVersion>
+    <AssemblyVersion>1.0.%2a</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+</Project>

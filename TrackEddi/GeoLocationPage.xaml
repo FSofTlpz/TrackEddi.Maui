@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TrackEddi;assembly=TrackEddi"
+             x:DataType="local:GeoLocationPage" 
+             x:Class="TrackEddi.GeoLocationPage"
+             Title="aktuelle Position"
+             x:Name="mypage"
+             BackgroundColor="DarkGray">
+   <ContentPage.Resources>
+      <ResourceDictionary>
+         <Style x:Key="MyLabel1" TargetType="Label">
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="HorizontalOptions" Value="Start"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Padding" Value="0,5,0,5"/>
+            <Setter Property="Grid.Column" Value="0"/>
+         </Style>
+
+         <Style x:Key="MyLabel2" TargetType="Label">
+            <Setter Property="TextColor" Value="Blue"/>
+            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="HorizontalOptions" Value="Start"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Padding" Value="10,5,5,5"/>
+            <Setter Property="Grid.Column" Value="1"/>
+         </Style>
+      </ResourceDictionary>
+   </ContentPage.Resources>
+
+   <ContentPage.Content>
+      <ScrollView Orientation="Vertical" Margin="10">
+         <Grid ColumnDefinitions="45*,55*" 
+               RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+
+            <Label Grid.Row="0" Text="Zeitpunkt:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="0" Text="{Binding GeoLocationTime}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="1" Text="Quelle:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="1" Text="{Binding GeoProviderName}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="2" Text="Breite:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="2" Text="{Binding GeoLatitude}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="3" Text="Länge:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="3" Text="{Binding GeoLongitude}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="4" Text="Höhe:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="4" Text="{Binding GeoElevation}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="5" Text="Höhenreferenz- system:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="5" Text="{Binding GeoAltitudeReferenceSystem}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="6" Text="Richtung:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="6" Text="{Binding GeoCourse}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="7" Text="Geschwindigkeit:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="7" Text="{Binding GeoSpeed}" Style="{StaticResource MyLabel2}"/>
+
+            <Label Grid.Row="8" Text="Genauigkeit:" Style="{StaticResource MyLabel1}"/>
+            <Label Grid.Row="8" Text="{Binding GeoAccuracy}" Style="{StaticResource MyLabel2}"/>
+
+         </Grid>
+      </ScrollView>
+   </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FSofTUtils.OSInterface.Control.TreeView"
+             BackgroundColor="LightGreen"
+             x:Name="this">
+   <ScrollView Orientation="Both">
+
+      <StackLayout x:Name="treeViewStackLayout"
+                   HorizontalOptions="FillAndExpand"
+                   VerticalOptions="Start"
+                   Orientation="Vertical"
+                   Margin="0"
+                   Padding="0" />
+   </ScrollView>
+</ContentView>

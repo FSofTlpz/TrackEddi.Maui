@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Images\GeoTagging.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FSofTUtils\FSofTUtils.csproj" />
+    <ProjectReference Include="..\GMap.NET\GMap.NET.Core\GMap.NET.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\FlagBlue.png" />
+    <Content Include="Images\FlagGreen.png" />
+    <Content Include="Images\Foto.png" />
+    <Content Include="Images\GeoTagging.png" />
+  </ItemGroup>
+</Project>

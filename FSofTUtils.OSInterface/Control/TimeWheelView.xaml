@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ctrl="clr-namespace:FSofTUtils.OSInterface.Control"
+             x:DataType="ctrl:TimeWheelView"
+             x:Class="FSofTUtils.OSInterface.Control.TimeWheelView"
+             x:Name="this">
+   <ContentView.Resources>
+      <ResourceDictionary>
+         <Style x:Key="templateWheelView" TargetType="ctrl:WheelView">
+            <Setter Property="BackColor" Value="{Binding BackColor, Source={x:Reference this}}"/>
+            <Setter Property="ItemTextColor" Value="{Binding ItemTextColor, Source={x:Reference this}}"/>
+            <Setter Property="ItemColor" Value="{Binding ItemColor, Source={x:Reference this}}"/>
+            <Setter Property="ItemColorCenter" Value="{Binding ItemColorCenter, Source={x:Reference this}}"/>
+            <Setter Property="ItemFontSize" Value="{Binding ItemFontSize, Source={x:Reference this}}"/>
+            <Setter Property="HorizontalOptions" Value="Fill"/>
+            <Setter Property="VerticalOptions" Value="Fill"/>
+         </Style>
+
+         <Style x:Key="templateWheelDivider" TargetType="Label">
+            <Setter Property="Text" Value=":"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="Scale" Value="2"/>
+         </Style>
+      </ResourceDictionary>
+   </ContentView.Resources>
+
+   <ContentView.Content>
+      <Grid ColumnDefinitions="30*,5*,30*,5*,30*"
+            BackgroundColor="{Binding BackColor, Source={x:Reference this}}"
+            HeightRequest="{Binding ControlHeight, Source={x:Reference this}}"
+            WidthRequest="{Binding ControlWidth, Source={x:Reference this}}"
+            HorizontalOptions="Fill"
+            Padding="5,0,5,0">
+
+         <ctrl:WheelView x:Name="WheelViewHour"
+                         Grid.Column="0"
+                         MaxValue="23"
+                         Loop="{Binding WheelLoop, Source={x:Reference this}}"
+                         Style="{StaticResource templateWheelView}"/>
+
+         <Label Grid.Column="1" 
+                TextColor="{Binding ItemTextColor, Source={x:Reference this}}" 
+                Style="{StaticResource templateWheelDivider}"/>
+
+         <ctrl:WheelView x:Name="WheelViewMinute"
+                         Grid.Column="2"
+                         MaxValue="59"
+                         Loop="{Binding WheelLoop, Source={x:Reference this}}"
+                         Style="{StaticResource templateWheelView}"/>
+
+         <Label Grid.Column="3" 
+                TextColor="{Binding ItemTextColor, Source={x:Reference this}}" 
+                Style="{StaticResource templateWheelDivider}"/>
+
+         <ctrl:WheelView x:Name="WheelViewSecond"
+                         Grid.Column="4"
+                         MaxValue="59"
+                         Loop="{Binding WheelLoop, Source={x:Reference this}}"
+                         Style="{StaticResource templateWheelView}"/>
+
+      </Grid>
+   </ContentView.Content>
+</ContentView>

@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TrackEddi;assembly=TrackEddi"
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+             x:DataType="local:WorkbenchContentPage"
+             x:Class="TrackEddi.WorkbenchContentPage"
+             Title="Tracks und Marker"
+             x:Name="mypage">
+   <ContentPage.ToolbarItems>
+      <ToolbarItem Order="Secondary" Priority="1" x:Name="tbiTracksViewAll" Text="alle Tracks anzeigen" Clicked="ToolbarItem_ShowAllTracks_Clicked"/>
+      <ToolbarItem Order="Secondary" Priority="2" x:Name="tbiTracksHideAll" Text="alle Tracks verbergen" Clicked="ToolbarItem_HideAllTracks_Clicked"/>
+      <ToolbarItem Order="Secondary" Priority="3" x:Name="tbiTracksDelete" Text="alle angezeigten Tracks löschen" Clicked="ToolbarItem_DeleteAllVisibleTracks_Clicked"/>
+
+      <ToolbarItem Order="Secondary" Priority="4" x:Name="tbiMarkersViewAll" Text="alle Marker anzeigen" Clicked="ToolbarItem_ShowAllMarker_Clicked"/>
+      <ToolbarItem Order="Secondary" Priority="5" x:Name="tbiMarkersHideAll" Text="alle Marker verbergen" Clicked="ToolbarItem_HideAllMarker_Clicked"/>
+      <ToolbarItem Order="Secondary" Priority="6" x:Name="tbiMarkersDelete" Text="alle angezeigten Marker löschen" Clicked="ToolbarItem_DeleteAllVisibleMarker_Clicked"/>
+   </ContentPage.ToolbarItems>
+
+   <ContentPage.Content>
+      <Grid RowDefinitions="Auto,Auto,Auto,*">
+         <!-- 3 Zeilen für Tabheader, 4. Zeile für Tabinhalt -->
+
+         <!-- Definition der Tab-Header -->
+         <BoxView Grid.Row="0" Grid.Column="0" HeightRequest="1" BackgroundColor="DarkGray" />
+         <ScrollView Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,3,0,0">
+            <HorizontalStackLayout RadioButtonGroup.GroupName="Groupname4Tabs"
+                                   x:Name="StackLayout4Tabs"
+                                   BackgroundColor="WhiteSmoke"
+                                   BindableLayout.ItemsSource="{Binding Path=TabPageDef}">
+               <BindableLayout.ItemTemplate>
+                  <DataTemplate>
+
+                     <!--"Reiter" der TabPage-->
+
+                     <Border Stroke="Black"
+                             BackgroundColor="LightGray"
+                             Margin="0"
+                             StrokeShape="RoundRectangle 15,15,0,0">
+                        <RadioButton Content="{Binding HeaderName, x:DataType=local:WorkbenchContentPage_TabPageItem}" 
+                                     Value="{Binding Id, x:DataType=local:WorkbenchContentPage_TabPageItem}"
+                                     GroupName="Groupname4Tabs"
+                                     CheckedChanged="TabBar_CheckedChanged">
+                           <RadioButton.ControlTemplate>
+                              <ControlTemplate>
+
+                                 <Grid RowDefinitions="*,3" Padding="2,10,2,4" x:DataType="local:WorkbenchContentPage">
+
+                                    <!--Titel der TabPage-->
+                                    <Label x:Name="TabTextLabel" Grid.Row="0" FontSize="Large" 
+                                           Padding="10,5,10,5"
+                                           x:DataType="{x:Null}"
+                                           Text="{TemplateBinding Content}" />
+
+                                    <!--Auswahlindikator ("Balken") unter dem Titel-->
+                                    <BoxView x:Name="TabIndicator" Grid.Row="1"/>
+
+                                    <VisualStateManager.VisualStateGroups>
+                                       <VisualStateGroupList>
+                                          <VisualStateGroup x:Name="CheckedStates">
+
+                                             <VisualState x:Name="Checked">
+                                                <VisualState.Setters>
+                                                   <Setter TargetName="TabIndicator" Property="BoxView.Color" Value="Black"/>
+                                                   <Setter TargetName="TabTextLabel" Property="Label.TextColor" Value="Black"/>
+                                                </VisualState.Setters>
+                                             </VisualState>
+
+                                             <VisualState x:Name="Unchecked">
+                                                <VisualState.Setters>
+                                                   <Setter TargetName="TabIndicator" Property="BoxView.Color" 
+                                                           x:DataType="{x:Null}"
+                                                           Value="{Binding Source={x:Reference StackLayout4Tabs}, Path=BackgroundColor}"/>
+                                                   <Setter TargetName="TabTextLabel" Property="Label.TextColor" Value="DarkGray"/>
+                                                </VisualState.Setters>
+                                             </VisualState>
+
+                                          </VisualStateGroup>
+                                       </VisualStateGroupList>
+                                    </VisualStateManager.VisualStateGroups>
+                                 </Grid>
+
+                              </ControlTemplate>
+                           </RadioButton.ControlTemplate>
+                        </RadioButton>
+                     </Border>
+                  </DataTemplate>
+               </BindableLayout.ItemTemplate>
+            </HorizontalStackLayout>
+         </ScrollView>
+         <BoxView Grid.Row="2" Grid.Column="0" HeightRequest="1" Color="DarkGray" />
+
+         <AbsoluteLayout Grid.Row="3" Grid.Column="0" 
+                         VerticalOptions="Fill" 
+                         HorizontalOptions="Fill">
+
+            <Grid x:Name="PseudoPage1" 
+                  RowDefinitions="*"
+                  ColumnDefinitions="*"
+                  IsVisible="False"
+                  AbsoluteLayout.LayoutFlags="All"
+                  AbsoluteLayout.LayoutBounds="0,0,1,1">
+
+               <ListView x:Name="ListViewTracks" 
+                         Grid.Row="0" Grid.Column="0"
+                         android:ListView.IsFastScrollEnabled="true"
+                         CachingStrategy="RecycleElement"
+                         SelectionMode="Single"
+                         VerticalScrollBarVisibility="Always"
+                         HasUnevenRows="True"
+                         SeparatorColor="Black"
+                         BackgroundColor="LightYellow">
+                  <ListView.ItemTemplate>
+                     <DataTemplate x:DataType="local:WorkbenchContentPage_ListViewObjectItem">
+                        <ViewCell>
+                           <Grid RowDefinitions="30,30"
+                                 ColumnDefinitions="30,30,38,30,30,*"
+                                 BackgroundColor="#FFFFB1"
+                                 Margin="0"
+                                 Padding="2">
+
+                              <CheckBox Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" 
+                                        IsChecked="{Binding IsVisible}" 
+                                        VerticalOptions="Center" Color="Black" Margin="0"/>
+
+                              <ImageButton Grid.Column="1" Grid.Row="0" Margin="0,0,0,2"
+                                           Source="arrow_up.png" Style="{StaticResource MyMiniImageButton}" 
+                                           Clicked="TrackMoveUpClicked" CommandParameter="{Binding .}"/>
+                              <ImageButton Grid.Column="1" Grid.Row="1" Margin="0,2,0,0"
+                                           Source="arrow_down.png" Style="{StaticResource MyMiniImageButton}" 
+                                           Clicked="TrackMoveDownClicked" CommandParameter="{Binding .}"/>
+
+                              <ImageButton Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Margin="4,15,4,15"
+                                           Source="zoom1.png" Style="{StaticResource MyMiniImageButton}" 
+                                           Clicked="TrackZoomClicked" CommandParameter="{Binding .}"/>
+
+                              <Button Grid.Column="3" Grid.Row="0" Margin="0,0,0,2"
+                                      Style="{StaticResource MyMiniColorButton}" 
+                                      BackgroundColor="{Binding TrackColor}"
+                                      Clicked="TrackColorClicked" CommandParameter="{Binding .}"/>
+                              <ImageButton Grid.Column="3" Grid.Row="1" Margin="0,2,0,0"
+                                           Source="arrow_undo.png" Style="{StaticResource MyMiniImageButton}" 
+                                           Clicked="TrackTurnBackClicked" CommandParameter="{Binding .}"/>
+
+                              <ImageButton Grid.Column="4" Grid.Row="0" Margin="4,0,0,2"
+                                           Source="tracksimpl.png" Style="{StaticResource MyMiniImageButton}" 
+                                           Clicked="TrackSimplClicked" CommandParameter="{Binding .}"/>
+
+                              <ImageButton Grid.Column="4" Grid.Row="1" Margin="4,2,0,0"
+                                           Source="delete.png" Style="{StaticResource MyMiniImageButton}" 
+                                           Clicked="TrackDeleteClicked" CommandParameter="{Binding .}"/>
+
+                              <ScrollView Orientation="Horizontal" Grid.Column="5" Grid.Row="0" Grid.RowSpan="2"
+                                          VerticalOptions="Center"
+                                          Margin="5,0,2,0">
+                                 <VerticalStackLayout>
+                                    <Label Text="{Binding Text1}" FontSize="Medium" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Text="{Binding Text2}" FontSize="Small" FontAttributes="None" TextColor="Blue"/>
+                                    <VerticalStackLayout.GestureRecognizers>
+                                       <TapGestureRecognizer Tapped="TrackPropsTapped" CommandParameter="{Binding .}"/>
+                                    </VerticalStackLayout.GestureRecognizers>
+                                 </VerticalStackLayout>
+                              </ScrollView>
+
+                           </Grid>
+                        </ViewCell>
+                     </DataTemplate>
+                  </ListView.ItemTemplate>
+               </ListView>
+
+            </Grid>
+
+            <Grid x:Name="PseudoPage2" 
+                  RowDefinitions="*"
+                  ColumnDefinitions="*"
+                  IsVisible="False"
+                  AbsoluteLayout.LayoutFlags="All"
+                  AbsoluteLayout.LayoutBounds="0,0,1,1">
+
+               <ListView x:Name="ListViewMarker" 
+                         Grid.Row="0" Grid.Column="0"
+                         android:ListView.IsFastScrollEnabled="true"
+                         CachingStrategy="RecycleElement"
+                         SelectionMode="Single"
+                         VerticalScrollBarVisibility="Always"
+                         HasUnevenRows="True"
+                         SeparatorColor="Black"
+                         BackgroundColor="Bisque">
+                  <ListView.ItemTemplate>
+                     <DataTemplate x:DataType="local:WorkbenchContentPage_ListViewObjectItem">
+                        <ViewCell>
+                           <Grid RowDefinitions="30,30"
+                                 ColumnDefinitions="30,30,38,30,30,*"
+                                 BackgroundColor="#FFD5A3"
+                                 Margin="0"
+                                 Padding="2">
+
+                              <CheckBox Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" 
+                                        IsChecked="{Binding IsVisible}" 
+                                        VerticalOptions="Center" Color="Black" Margin="0"/>
+
+                              <ImageButton Grid.Column="1" Grid.Row="0" Margin="0,0,0,2"
+                                           Source="arrow_up.png" Style="{StaticResource MyMiniImageButton}" 
+                                           Clicked="MarkerMoveUpClicked" CommandParameter="{Binding .}"/>
+                              <ImageButton Grid.Column="1" Grid.Row="1" Margin="0,2,0,0"
+                                           Source="arrow_down.png" Style="{StaticResource MyMiniImageButton}" 
+                                           Clicked="MarkerMoveDownClicked" CommandParameter="{Binding .}"/>
+
+                              <ImageButton Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Margin="4"
+                                           Source="zoom1.png" Style="{StaticResource MyMiniImageButton}" 
+                                           Clicked="MarkerZoomClicked" CommandParameter="{Binding .}"/>
+
+                              <!-- FALSCHE DARSTELLUNG -->
+                              <ImageButton Grid.Column="3" Grid.Row="0" Grid.RowSpan="2"
+                                           Source="{Binding Picture}" 
+                                           Style="{StaticResource MyMiniImageButton}" 
+                                           Clicked="MarkerSymbolClicked" CommandParameter="{Binding .}"/>
+
+                              <ImageButton Grid.Column="4" Grid.Row="0" Grid.RowSpan="2" Margin="4"
+                                           Source="delete.png" Style="{StaticResource MyMiniImageButton}" 
+                                           Clicked="MarkerDeleteClicked" CommandParameter="{Binding .}"/>
+
+                              <ScrollView Orientation="Horizontal" Grid.Column="5" Grid.Row="0" Grid.RowSpan="2"
+                                          VerticalOptions="Center"
+                                          Margin="5,0,2,0">
+                                 <VerticalStackLayout>
+                                    <Label Text="{Binding Text1}" FontSize="Medium" FontAttributes="Bold" TextColor="Black"/>
+                                    <Label Text="{Binding Text2}" FontSize="Small" FontAttributes="None" TextColor="Blue"/>
+                                    <VerticalStackLayout.GestureRecognizers>
+                                       <TapGestureRecognizer Tapped="MarkerPropsTapped" CommandParameter="{Binding .}"/>
+                                    </VerticalStackLayout.GestureRecognizers>
+                                 </VerticalStackLayout>
+                              </ScrollView>
+
+                           </Grid>
+
+                        </ViewCell>
+                     </DataTemplate>
+                  </ListView.ItemTemplate>
+               </ListView>
+
+            </Grid>
+
+            <ActivityIndicator x:Name="BusyIndicator" Style="{StaticResource MyActivityIndicator}"/>
+
+         </AbsoluteLayout>
+
+      </Grid>
+   </ContentPage.Content>
+</ContentPage>

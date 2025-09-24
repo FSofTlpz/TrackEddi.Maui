@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fuxctrl="clr-namespace:FSofTUtils.OSInterface.Control;assembly=FSofTUtils.OSInterface"
+             Title="Dateiauswahl"
+             x:Class="FSofTUtils.OSInterface.Page.ChooseFilePage">
+   <ContentPage.Content>
+      <AbsoluteLayout>
+         <!-- 
+         Das ChooseFile-ContentView wird normalerweise so lang, dass alle Elemente im ListView angezeigt werden.
+         Durch das "Einkapseln" im Grid (mit nur 1 Zeile) wird es auf die Bildschirmgröße eingegrenzt.       
+         -->
+         <Grid AbsoluteLayout.LayoutBounds="0,0,1,1"
+               AbsoluteLayout.LayoutFlags="SizeProportional">
+            <Grid.RowDefinitions>
+               <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <fuxctrl:ChooseFile x:Name="chooseFile"
+                                 Grid.Row="0"
+                                 ChooseFileReadyEvent="ctrl_ChooseFileReadyEvent"
+                                 BackgroundColor="White"
+                                 ListViewItemColor="AliceBlue"
+                                 ColorMainText="Black"
+                                 BackcolorMainText="LightBlue"
+                                 ColorInfoText="DarkGray"
+                                 BackcolorInfoText="White"
+                                 ListViewSeparatorColor="Black"
+                                 SelectedListViewItemColor="LightSteelBlue"/>
+
+         </Grid>
+
+         <!-- 
+         Der ActivityIndicator wird über das Grid in die Mitte des Bildschirms gelegt und im Code sichtbar/unsichtbar geschaltet.
+         -->
+         <ActivityIndicator x:Name="BusyIndicator" 
+                            AbsoluteLayout.LayoutBounds="0.5, 0.5, -1, -1" 
+                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                            Color="Red"
+                            BackgroundColor="#00FFFFFF"/>
+      </AbsoluteLayout>
+   </ContentPage.Content>
+</ContentPage>

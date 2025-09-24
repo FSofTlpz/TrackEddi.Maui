@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fux="clr-namespace:FSofTUtils.OSInterface.Control;assembly=FSofTUtils.OSInterface"
+             Title="Ton-Auswahl"
+             x:Class="FSofTUtils.OSInterface.Page.SoundPickerPage">
+   <ContentPage.Content>
+      <AbsoluteLayout>
+         <Grid AbsoluteLayout.LayoutBounds="0,0,1,1"
+               AbsoluteLayout.LayoutFlags="SizeProportional">
+            <Grid.RowDefinitions>
+               <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <fux:SoundPicker x:Name="soundPicker" 
+                             BackgroundColor="LightBlue"
+                             ItemColor="LightSkyBlue"
+                             SelectedItemColor="SteelBlue"
+                             GadgetsColor="CornflowerBlue"
+                             FilePickerIsVisible="True"
+                             VolumeSliderIsVisible="True"
+                             CloseEvent="soundPicker_CloseEvent"/>
+         </Grid>
+
+         <!-- 
+         Der ActivityIndicator wird über das Grid in die Mitte des Bildschirms gelegt und im Code sichtbar/unsichtbar geschaltet.
+         -->
+         <ActivityIndicator x:Name="BusyIndicator" 
+                            AbsoluteLayout.LayoutBounds="0.5, 0.5, -1, -1" 
+                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                            Color="Red"
+                            BackgroundColor="#00FFFFFF"/>
+      </AbsoluteLayout>
+   </ContentPage.Content>
+</ContentPage>

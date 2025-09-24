@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TrackEddi;assembly=TrackEddi"
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+             x:DataType="local:GPXSearchPage"
+             x:Class="TrackEddi.GPXSearchPage"
+             Title="gefundene GPX-Dateien"
+             BackgroundColor="#8D8DEA">
+   <ContentPage.Content>
+      <Grid RowDefinitions="*,Auto,Auto">
+         <ListView x:Name="ListViewFiles" 
+                   Grid.Row="0" Grid.Column="0"
+                   android:ListView.IsFastScrollEnabled="true"
+                   CachingStrategy="RecycleElement"
+                   SelectionMode="Single"
+                   VerticalScrollBarVisibility="Always"
+                   HasUnevenRows="True"
+                   SeparatorVisibility="Default"
+                   SeparatorColor="Black"
+                   Margin="5,0,5,10">
+            <ListView.ItemTemplate>
+               <DataTemplate x:DataType="local:GPXSearchPage_ListViewObjectItem">
+                  <ViewCell>
+                     <Grid RowDefinitions="Auto"
+                           ColumnDefinitions="30,*"
+                           BackgroundColor="#FFD5A3"
+                           Margin="5"
+                           Padding="2">
+                        <CheckBox Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" 
+                                  IsChecked="{Binding IsMarked}" 
+                                  VerticalOptions="Center" 
+                                  Color="Black" 
+                                  Margin="0"/>
+                        <ScrollView Orientation="Horizontal" Grid.Column="1" Grid.Row="0"
+                                    VerticalOptions="Center"
+                                    Margin="5,0,2,0">
+                           <VerticalStackLayout>
+                              <Label Text="{Binding Filename}" 
+                                     FontSize="Medium" 
+                                     FontAttributes="Bold" 
+                                     TextColor="Blue"/>
+                              <Label Text="{Binding Filepath}" 
+                                     TextColor="Black"/>
+                           </VerticalStackLayout>
+                        </ScrollView>
+                     </Grid>
+                  </ViewCell>
+               </DataTemplate>
+            </ListView.ItemTemplate>
+         </ListView>
+
+         <BoxView Grid.Row="1" Style="{StaticResource HLine}"/>
+
+         <Button Grid.Row="2" Grid.Column="0" 
+                 Text="markierte Dateien übernehmen"
+                 Style="{StaticResource MyStdButton}"
+                 Clicked="Button_Clicked"/>
+      </Grid>
+   </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TrackEddi;assembly=TrackEddi"
+             x:DataType="local:EditTrackPage" 
+             x:Class="TrackEddi.EditTrackPage"
+             Title="Trackeigenschaften"
+             BackgroundColor="#8D8DEA"
+             x:Name="mypage">
+   <ContentPage.Resources>
+      <ResourceDictionary>
+         <Style x:Key="MyLabel" TargetType="Label">
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Grid.Column" Value="0"/>
+            <Setter Property="Margin" Value="5"/>
+         </Style>
+
+         <Style x:Key="MyEntry" TargetType="Entry">
+            <Setter Property="TextColor" Value="Blue"/>
+            <Setter Property="BackgroundColor" Value="White"/>
+            <Setter Property="HorizontalOptions" Value="Fill"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="IsSpellCheckEnabled" Value="False"/>
+            <Setter Property="IsTextPredictionEnabled" Value="False"/>
+            <Setter Property="Grid.Column" Value="1"/>
+         </Style>
+
+         <Style x:Key="MyEntryRO" TargetType="Entry">
+            <Setter Property="TextColor" Value="Violet"/>
+            <Setter Property="BackgroundColor" Value="White"/>
+            <Setter Property="Grid.Column" Value="1"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="HorizontalOptions" Value="Start"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+         </Style>
+      </ResourceDictionary>
+   </ContentPage.Resources>
+
+   <ContentPage.Content>
+      <ScrollView Orientation="Vertical">
+         <Grid ColumnDefinitions="30*,70*" RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto">
+
+            <Label Grid.Row="0" Text="Farbe:" Style="{StaticResource MyLabel}"/>
+            <Button Grid.Row="0" Grid.Column="1" 
+                    BackgroundColor="{Binding TrackColor}"
+                    HeightRequest="45"
+                    WidthRequest="45"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Start"
+                    BorderColor="Black"
+                    BorderWidth="1"
+                    CornerRadius="5"
+                    Margin="5"
+                    Clicked="TapGestureRecognizerColor_Tapped"/>
+
+            <Label Grid.Row="1" Text="Name:" Style="{StaticResource MyLabel}"/>
+            <ScrollView Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="5">
+               <HorizontalStackLayout>
+                  <Entry Placeholder="Name" Style="{StaticResource MyEntry}" Text="{Binding Name}" Margin="0"/>
+               </HorizontalStackLayout>
+            </ScrollView>
+
+            <Label Grid.Row="2" Text="Beschreibung:" Style="{StaticResource MyLabel}"/>
+            <ScrollView Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="5">
+               <HorizontalStackLayout>
+                  <Entry Placeholder="Beschreibung" Text="{Binding Description}" Style="{StaticResource MyEntry}" Margin="0"/>
+               </HorizontalStackLayout>
+            </ScrollView>
+
+            <Label Grid.Row="3" Text="Kommentar:" Style="{StaticResource MyLabel}"/>
+            <ScrollView Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="5">
+               <HorizontalStackLayout>
+                  <Entry Placeholder="Kommentar" Text="{Binding Comment}" Style="{StaticResource MyEntry}" Margin="0"/>
+               </HorizontalStackLayout>
+            </ScrollView>
+
+            <Label Grid.Row="4" Text="Quelle:" Style="{StaticResource MyLabel}"/>
+            <ScrollView Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="5">
+               <HorizontalStackLayout>
+                  <Entry Placeholder="Quelle" Style="{StaticResource MyEntry}" Text="{Binding Source}" Margin="0"/>
+               </HorizontalStackLayout>
+            </ScrollView>
+
+            <Label Grid.Row="5" Text="Länge:" Style="{StaticResource MyLabel}"/>
+            <Entry Grid.Row="5" Text="{Binding Length}" Style="{StaticResource MyEntryRO}"/>
+
+            <Button Grid.Row="6" Grid.ColumnSpan="2" Text="speichern" Style="{StaticResource MyStdButton}" Margin="5,20,5,20" Clicked="Button_Clicked"/>
+
+            <ScrollView Grid.Row="7" Grid.ColumnSpan="2" Orientation="Horizontal">
+               <Editor IsReadOnly="True"
+                       TextColor="Black"
+                       BackgroundColor="LightGray"
+                       Margin="5"
+                       Text="{Binding StatisticalInfo}"/>
+            </ScrollView>
+
+            <Image Grid.Row="8" Grid.ColumnSpan="2" Source="{Binding ElevationProfile}" Aspect="AspectFit"/>
+
+         </Grid>
+      </ScrollView>
+   </ContentPage.Content>
+</ContentPage>

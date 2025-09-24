@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TrackEddi;assembly=TrackEddi"
+             x:DataType="local:OsmSearchPage" 
+             x:Class="TrackEddi.ShowGarminInfo4LonLat"
+             Title="Infos aus der Garminkarte"
+             BackgroundColor="LightGreen"
+             x:Name="mypage">
+
+   <ContentPage.Content>
+      <StackLayout>
+         <Label 
+                x:Name="LabelPreText"
+                TextColor="Black"
+                FontSize="Medium"/>
+         <ListView 
+                x:Name="ListViewResults"
+                Margin="0"
+                SelectionMode="None"
+                VerticalScrollBarVisibility="Always"
+                CachingStrategy="RecycleElement"
+                HasUnevenRows="True"
+                SeparatorColor="Black">
+
+            <ListView.ItemTemplate>
+               <DataTemplate x:DataType="local:ShowGarminInfo4LonLat_ListViewObjectItem">
+                  <ViewCell>
+                     <ScrollView Orientation="Horizontal">
+                        <HorizontalStackLayout
+                                    HorizontalOptions="Fill"
+                                    Margin="5"
+                                    Padding="5"
+                                    BackgroundColor="#FFb0FFb0">
+
+                           <ImageButton Source="{Binding Picture}" 
+                                        Style="{StaticResource MyImageButton}"
+                                        BorderWidth="1"
+                                        Padding="1"/>
+                           <VerticalStackLayout HorizontalOptions="Fill"
+                                                VerticalOptions="Fill"
+                                                Padding="10,5,10,5">
+                              <Label Text="{Binding TypeName}" FontSize="Medium" TextColor="Blue"/>
+                              <Label Text="{Binding Name}" IsVisible="{Binding NameIsSet}" FontSize="Medium" TextColor="Black"/>
+                           </VerticalStackLayout>
+                        </HorizontalStackLayout>
+                     </ScrollView>
+                  </ViewCell>
+               </DataTemplate>
+            </ListView.ItemTemplate>
+         </ListView>
+      </StackLayout>
+   </ContentPage.Content>
+</ContentPage>

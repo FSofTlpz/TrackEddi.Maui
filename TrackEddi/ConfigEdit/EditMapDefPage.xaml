@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:local="clr-namespace:TrackEddi;assembly=TrackEddi" xmlns:behaviours="clr-namespace:TrackEddi.ConfigEdit"
+             xmlns:fsoft="clr-namespace:FSofTUtils.OSInterface;assembly=FSofTUtils.OSInterface"
+             xmlns:cfg="clr-namespace:TrackEddi.ConfigEdit"
+             x:DataType="cfg:EditMapDefPage"
+             x:Class="TrackEddi.ConfigEdit.EditMapDefPage"
+             Title="Kartenkonfiguration"
+             x:Name="mypage"
+             BackgroundColor="LightGray">
+   <ContentPage.Resources>
+      <ResourceDictionary>
+         <Style x:Key="HLine" TargetType="BoxView">
+            <Setter Property="BackgroundColor" Value="Black"/>
+            <Setter Property="HeightRequest" Value="1"/>
+            <Setter Property="Margin" Value="0,0,0,0"/>
+         </Style>
+         <Style x:Key="MyLabel" TargetType="Label">
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="BackgroundColor" Value="DarkGray"/>
+         </Style>
+         <Style x:Key="MyEntryNumeric" TargetType="Entry">
+            <Setter Property="TextColor" Value="Blue"/>
+            <Setter Property="WidthRequest" Value="50"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="Keyboard" Value="Numeric"/>
+         </Style>
+         <Style x:Key="MyButton" TargetType="Border">
+            <Setter Property="WidthRequest" Value="40"/>
+            <Setter Property="HeightRequest" Value="40"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Stroke" Value="DarkGray"/>
+            <Setter Property="BackgroundColor" Value="LightGray"/>
+            <Setter Property="StrokeShape" Value="RoundRectangle 5,5,5,5"/>
+            <Setter Property="Padding" Value="4"/>
+            <Setter Property="Shadow">
+               <Setter.Value>
+                  <Shadow Brush="Gray" Opacity="0.8" Radius="20" Offset="5,5" />
+               </Setter.Value>
+            </Setter>
+         </Style>
+         <Style x:Key="MyButton2" TargetType="Button">
+            <Setter Property="WidthRequest" Value="120"/>
+            <Setter Property="HeightRequest" Value="40"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="BackgroundColor" Value="LightGray"/>
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="FontSize" Value="Default"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Shadow">
+               <Setter.Value>
+                  <Shadow Brush="Gray" Opacity="0.8" Radius="20" Offset="5,5" />
+               </Setter.Value>
+            </Setter>
+         </Style>
+         <Style x:Key="MyGroupBorder" TargetType="Border">
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="BackgroundColor" Value="LightGray"/>
+            <Setter Property="Margin" Value="5,3,5,3"/>
+            <Setter Property="StrokeShape" Value="RoundRectangle 5,5,5,5"/>
+            <Setter Property="Shadow">
+               <Setter.Value>
+                  <Shadow Brush="Gray" Opacity="0.8" Radius="20" Offset="5,5" />
+               </Setter.Value>
+            </Setter>
+         </Style>
+         <Style x:Key="MyButtonImage" TargetType="Image">
+            <Setter Property="HorizontalOptions" Value="Fill"/>
+            <Setter Property="VerticalOptions" Value="Fill"/>
+            <Setter Property="Aspect" Value="AspectFit"/>
+         </Style>
+         <Style x:Key="MyBorderRR" TargetType="Border">
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="BackgroundColor" Value="DarkGray"/>
+            <Setter Property="Margin" Value="5,2,5,2"/>
+            <Setter Property="StrokeShape" Value="RoundRectangle 5,5,5,5"/>
+         </Style>
+      </ResourceDictionary>
+   </ContentPage.Resources>
+
+   <AbsoluteLayout>
+      <Grid RowDefinitions="*,Auto,Auto"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
+         <ScrollView Grid.Row="0" Orientation="Vertical">
+            <VerticalStackLayout>
+               <Border x:Name="frameStd" Style="{StaticResource MyGroupBorder}">
+                  <VerticalStackLayout>
+                     <Label Text="Kartentyp:" Style="{StaticResource MyLabel}"/>
+                     <Picker x:Name="pickerProvider" 
+                             Title="Kartentyp"
+                             TextColor="Blue"
+                             SelectedIndexChanged="pickerProvider_SelectedIndexChanged"/>
+
+                     <Label Text="Kartenname:" Style="{StaticResource MyLabel}"/>
+                     <Entry x:Name="entryMapname" HorizontalOptions="Fill" TextColor="Blue" Keyboard="Plain"/>
+
+                     <Label Text="Zoom von .. bis ..:" Style="{StaticResource MyLabel}"/>
+                     <HorizontalStackLayout>
+                        <Entry x:Name="entryZoomFrom" Style="{StaticResource MyEntryNumeric}">
+                           <Entry.Behaviors>
+                              <behaviours:IntMinMaxEntryBehavior MinimumValue="0" StandardValue="0" MaximumValue="24"/>
+                           </Entry.Behaviors>
+                        </Entry>
+                        <Label Text=" .. " FontSize="Medium" TextColor="Black" VerticalOptions="Center"/>
+                        <Entry x:Name="entryZoomTo" Style="{StaticResource MyEntryNumeric}" >
+                           <Entry.Behaviors>
+                              <behaviours:IntMinMaxEntryBehavior MinimumValue="0" StandardValue="24" MaximumValue="24"/>
+                           </Entry.Behaviors>
+                        </Entry>
+                     </HorizontalStackLayout>
+                  </VerticalStackLayout>
+               </Border>
+
+               <Border x:Name="frameHillshading" Style="{StaticResource MyGroupBorder}">
+                  <Border.StrokeShape>
+                     <RoundRectangle CornerRadius="5,5,5,5" />
+                  </Border.StrokeShape>
+                  <VerticalStackLayout>
+                     <Label Text="Hillshading:" Style="{StaticResource MyLabel}"/>
+                     <CheckBox x:Name="cbHillshading" Color="Blue"/>
+
+                     <Label Text="Hillshadingalpha (0..255):" Style="{StaticResource MyLabel}"/>
+                     <Entry x:Name="entryHillshadingalpha" Style="{StaticResource MyEntryNumeric}">
+                        <Entry.Behaviors>
+                           <behaviours:IntMinMaxEntryBehavior MinimumValue="0" StandardValue="128" MaximumValue="255"/>
+                        </Entry.Behaviors>
+                     </Entry>
+                  </VerticalStackLayout>
+               </Border>
+
+               <Border x:Name="frameGarminKmz" Style="{StaticResource MyGroupBorder}">
+                  <StackLayout Margin="0" Padding="0">
+                     <Label Text="KMZ-Datei:" Style="{StaticResource MyLabel}"/>
+                     <HorizontalStackLayout Margin="5,5,5,10">
+                        <Border Style="{StaticResource MyButton}">
+                           <Image Style="{StaticResource MyButtonImage}"
+                                  Source="{fsoft:ImageResource TrackEddi.Images.Open.png}"/>
+                           <Border.GestureRecognizers>
+                              <TapGestureRecognizer Tapped="ChooseKmzFile_Clicked"/>
+                           </Border.GestureRecognizers>
+                        </Border>
+                        <ScrollView Orientation="Horizontal" VerticalOptions="Center">
+                           <Label x:Name="lblKmzFile" FontSize="Medium" TextColor="Blue" VerticalOptions="Center"/>
+                        </ScrollView>
+                     </HorizontalStackLayout>
+                  </StackLayout>
+               </Border>
+
+               <Border x:Name="frameGarmin" Style="{StaticResource MyGroupBorder}">
+                  <VerticalStackLayout Margin="0" Padding="0">
+                     <Label Text="TDB-Datei:" Style="{StaticResource MyLabel}"/>
+                     <HorizontalStackLayout Margin="5,5,5,10">
+                        <Border Style="{StaticResource MyButton}">
+                           <Image Style="{StaticResource MyButtonImage}"
+                                  Source="{fsoft:ImageResource TrackEddi.Images.Open.png}"/>
+                           <Border.GestureRecognizers>
+                              <TapGestureRecognizer Tapped="ChooseTdbFile_Clicked"/>
+                           </Border.GestureRecognizers>
+                        </Border>
+                        <ScrollView Orientation="Horizontal" VerticalOptions="Center">
+                           <Label x:Name="lblTdbFile" FontSize="Medium" TextColor="Blue" VerticalOptions="Center"/>
+                        </ScrollView>
+                     </HorizontalStackLayout>
+
+                     <Label Text="TYP-Datei:" Style="{StaticResource MyLabel}"/>
+                     <HorizontalStackLayout Margin="5,5,5,10">
+                        <Border Style="{StaticResource MyButton}">
+                           <Image Style="{StaticResource MyButtonImage}"
+                                       Source="{fsoft:ImageResource TrackEddi.Images.Open.png}"/>
+                           <Border.GestureRecognizers>
+                              <TapGestureRecognizer Tapped="ChooseTypFile_Clicked"/>
+                           </Border.GestureRecognizers>
+                        </Border>
+                        <ScrollView Orientation="Horizontal" VerticalOptions="Center">
+                           <Label x:Name="lblTypFile" FontSize="Medium" TextColor="Blue" VerticalOptions="Center"/>
+                        </ScrollView>
+                     </HorizontalStackLayout>
+
+                     <Label Text="Faktor für Textgröße (0,01 .. 10,00):" Style="{StaticResource MyLabel}"/>
+
+                     <Entry x:Name="entryTextFactor" Style="{StaticResource MyEntryNumeric}">
+                        <Entry.Behaviors>
+                           <behaviours:DoubleMinMaxEntryBehavior MinimumValue="0.01" StandardValue="1.0" MaximumValue="10"/>
+                        </Entry.Behaviors>
+                     </Entry>
+
+                     <Label Text="Faktor für Markergröße (0,01 .. 10,00):" Style="{StaticResource MyLabel}"/>
+                     <Entry x:Name="entrySymbolFactor" Style="{StaticResource MyEntryNumeric}">
+                        <Entry.Behaviors>
+                           <behaviours:DoubleMinMaxEntryBehavior MinimumValue="0.01" StandardValue="1.0" MaximumValue="10"/>
+                        </Entry.Behaviors>
+                     </Entry>
+
+                     <Label Text="Faktor für Linienbreite (0,01 .. 10,00):" Style="{StaticResource MyLabel}"/>
+                     <Entry x:Name="entryLineFactor" Style="{StaticResource MyEntryNumeric}">
+                        <Entry.Behaviors>
+                           <behaviours:DoubleMinMaxEntryBehavior MinimumValue="0.01" StandardValue="1.0" MaximumValue="10"/>
+                        </Entry.Behaviors>
+                     </Entry>
+
+                  </VerticalStackLayout>
+               </Border>
+
+               <Border x:Name="frameWms" Style="{StaticResource MyGroupBorder}">
+                  <VerticalStackLayout Margin="0" Padding="0">
+                     <Label Text="URL:" Style="{StaticResource MyLabel}"/>
+                     <Entry x:Name="entryUrl" TextColor="Blue" Keyboard="Url"/>
+
+                     <Label Text="Version:" Style="{StaticResource MyLabel}"/>
+                     <Entry x:Name="entryVersion" TextColor="Blue" Keyboard="Plain"/>
+
+                     <Label Text="SRS:" Style="{StaticResource MyLabel}"/>
+                     <Entry x:Name="entrySrs" TextColor="Blue" Keyboard="Plain"/>
+
+                     <Label Text="Bildformat:" Style="{StaticResource MyLabel}"/>
+                     <Picker x:Name="pickerWmsPictFormat" Title="Bildformat" TextColor="Blue">
+                        <Picker.ItemsSource>
+                           <x:Array Type="{x:Type x:String}">
+                              <x:String>PNG</x:String>
+                              <x:String>JPG</x:String>
+                           </x:Array>
+                        </Picker.ItemsSource>
+                     </Picker>
+
+                     <Label Text="Layer:" Style="{StaticResource MyLabel}"/>
+                     <Entry x:Name="entryLayer" TextColor="Blue" Keyboard="Plain"/>
+
+                     <Label Text="weitere Parameter:" Style="{StaticResource MyLabel}"/>
+                     <Entry x:Name="entryExtParams" TextColor="Blue" Keyboard="Plain"/>
+                  </VerticalStackLayout>
+               </Border>
+
+               <Border x:Name="frameMulti" Style="{StaticResource MyGroupBorder}">
+                  <VerticalStackLayout Margin="0" Padding="0">
+                     <Label Text="Kartenebenen:" Style="{StaticResource MyLabel}"/>
+
+                     <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+                        <ListView x:Name="lstMaps" Grid.Row="0" Grid.Column="0"
+                                 CachingStrategy="RecycleElement"
+                                 android:ListView.IsFastScrollEnabled="true"
+                                 SeparatorColor="Black"
+                                 SeparatorVisibility="Default"
+                                 BackgroundColor="Wheat"
+                                 HeightRequest="150"
+                                 VerticalScrollBarVisibility="Always">
+
+                           <ListView.ItemTemplate>
+                              <DataTemplate x:DataType="cfg:ListViewItem">
+                                 <ViewCell>
+                                    <Grid RowDefinitions="*" ColumnDefinitions="*"
+                                          Margin="0">
+                                       <ScrollView x:Name="svItem" Grid.Column="0" Grid.Row="0" Orientation="Horizontal" 
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="Fill"
+                                                   Margin="0">
+                                          <Label x:Name="lblText" 
+                                                 Text="{Binding Text}" 
+                                                 TextColor="Black" 
+                                                 FontSize="Medium"
+                                                 VerticalOptions="Center"
+                                                 Margin="0"
+                                                 Padding="5">
+                                             <Label.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="lblText_Tapped"/>
+                                             </Label.GestureRecognizers>
+                                             <Label.Triggers>
+                                                <DataTrigger x:DataType="cfg:ListViewItem"
+                                                             Binding="{Binding IsSelected}"
+                                                             Value="true"
+                                                             TargetType="Label">
+                                                   <Setter Property="TextColor" Value="White" />
+                                                </DataTrigger>
+                                             </Label.Triggers>
+                                          </Label>
+                                       </ScrollView>
+
+                                       <Grid.Triggers>
+                                          <DataTrigger x:DataType="cfg:ListViewItem"
+                                                       Binding="{Binding IsSelected}"
+                                                       Value="true"
+                                                       TargetType="Grid">
+                                             <Setter Property="BackgroundColor" Value="DarkGreen" />
+                                          </DataTrigger>
+                                       </Grid.Triggers>
+                                    </Grid>
+                                 </ViewCell>
+                              </DataTemplate>
+                           </ListView.ItemTemplate>
+                        </ListView>
+
+                        <VerticalStackLayout Grid.Row="0" Grid.Column="1" Margin="0" Padding="0">
+                           <Button x:Name="btnUp" Text="⇑" Style="{StaticResource MyButton2}" FontSize="Large" WidthRequest="40" Clicked="btnUp_Tapped"/>
+                           <Button x:Name="btnDown" Text="⇓" Style="{StaticResource MyButton2}" FontSize="Large" WidthRequest="40" Clicked="btnDown_Tapped"/>
+                        </VerticalStackLayout>
+
+                        <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                              RowDefinitions="Auto" ColumnDefinitions="*,*,*">
+                           <Button Grid.Row="0" Grid.Column="0" x:Name="btnAdd" Text="❏ hinzufügen" Style="{StaticResource MyButton2}" BackgroundColor="#80FF80" Clicked="btnAdd_Tapped"/>
+                           <Button Grid.Row="0" Grid.Column="1" x:Name="btnEdit" Text="⚙ ändern" Style="{StaticResource MyButton2}" BackgroundColor="#FFFF80" Clicked="btnEdit_Tapped"/>
+                           <Button Grid.Row="0" Grid.Column="2" x:Name="btnDelete" Text="🗑 löschen" Style="{StaticResource MyButton2}" BackgroundColor="#FFb0b0" Clicked="btnDelete_Tapped"/>
+                        </Grid>
+                     </Grid>
+                  </VerticalStackLayout>
+               </Border>
+            </VerticalStackLayout>
+         </ScrollView>
+
+         <BoxView Grid.Row="1" Style="{StaticResource HLine}" Margin="0,5,0,5"/>
+
+         <Button x:Name="btnSave"
+                 Grid.Row="2"
+                 Text="speichern"
+                 IsEnabled="True"
+                 Style="{StaticResource MyStdButton}"
+                 Clicked="btnSave_Clicked"
+                 VerticalOptions="Fill"/>
+      </Grid>
+
+      <ActivityIndicator x:Name="BusyIndicator" Style="{StaticResource MyActivityIndicator}"/>
+
+   </AbsoluteLayout>
+</ContentPage>

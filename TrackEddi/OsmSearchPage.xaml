@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:local="clr-namespace:TrackEddi;assembly=TrackEddi"
+             x:DataType="local:OsmSearchPage" 
+             x:Class="TrackEddi.OsmSearchPage"
+             Title="OSM-Suche"
+             BackgroundColor="#8D8DEA"
+             x:Name="mypage">
+
+   <ContentPage.Content>
+
+      <Grid ColumnDefinitions="*" RowDefinitions="auto,auto,auto,*,auto,auto,auto,auto">
+
+         <Grid Grid.Row="0" Grid.Column="0" ColumnDefinitions="auto,*" RowDefinitions="auto">
+            <Label Grid.Row="0" Grid.Column="0"
+                   Text="Suche nach Text:"
+                   FontSize="Medium"
+                   TextColor="Black"
+                   VerticalOptions="Center"
+                   Padding="5"/>
+
+            <Entry Grid.Row="0" Grid.Column="1"
+                   Text="{Binding OsmPlacePattern}"
+                   FontSize="Medium"
+                   TextColor="Blue"
+                   Placeholder="Suchtext"
+                   HorizontalOptions="Fill"
+                   Margin="5"/>
+         </Grid>
+
+         <Button Grid.Row="1" Text="suchen" Style="{StaticResource MyStdButton}" Clicked="buttonOsm_Clicked"/>
+
+         <Label Grid.Row="2"
+                Text="Ergebnis:"
+                FontSize="Medium"
+                TextColor="Black"
+                Padding="5"/>
+
+         <ListView Grid.Row="3"
+                   x:Name="ListViewOsm"
+                   android:ListView.IsFastScrollEnabled="true"
+                   SelectionMode="Single"
+                   VerticalScrollBarVisibility="Always"
+                   HasUnevenRows="True"
+                   SeparatorColor="Black"
+                   SeparatorVisibility="None" 
+                   Margin="5,0,5,10">
+            <ListView.ItemTemplate>
+               <DataTemplate x:DataType="local:PlaceItem">
+                  <ViewCell>
+                     <Grid RowDefinitions="auto" ColumnDefinitions="*" Padding="3,0,3,0" Margin="0">
+                        <Border Grid.Column="0" Grid.Row="0"
+                                StrokeShape="RoundRectangle 5,5,5,5"
+                                BackgroundColor="LightGoldenrodYellow"
+                                Stroke="DarkGray"
+                                Padding="3,3,3,3">
+                           <Border.Shadow>
+                              <Shadow Brush="Gray" Offset="5,5" Radius="20" Opacity="0.8"/>
+                           </Border.Shadow>
+                           <Label Text="{Binding Name}" TextColor="Black" FontSize="Medium"/>
+                        </Border>
+                        <Grid.GestureRecognizers>
+                           <TapGestureRecognizer Tapped="OsmPlaceTapped" CommandParameter="{Binding .}"/>
+                        </Grid.GestureRecognizers>
+                     </Grid>
+                  </ViewCell>
+               </DataTemplate>
+            </ListView.ItemTemplate>
+         </ListView>
+
+         <BoxView Grid.Row="4" Style="{StaticResource HLine}"/>
+
+         <Label Grid.Row="5" 
+                Text="Objektsuche für den Kartenmittelpunkt"
+                FontSize="Medium"
+                TextColor="Black"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"/>
+
+         <Button Grid.Row="6" Text="suchen" Style="{StaticResource MyStdButton}" Clicked="buttonOsmBack_Clicked"/>
+
+         <ListView Grid.Row="7" 
+                   x:Name="ListViewOsmBack"
+                   android:ListView.IsFastScrollEnabled="true"
+                   SelectionMode="Single"
+                   VerticalScrollBarVisibility="Always"
+                   HasUnevenRows="True"
+                   SeparatorColor="Black"
+                   SeparatorVisibility="None"
+                   HeightRequest="100">
+            <ListView.ItemTemplate>
+               <DataTemplate x:DataType="local:PlaceItem">
+                  <ViewCell>
+                     <Grid RowDefinitions="auto" ColumnDefinitions="*" Padding="3,5,3,5">
+                        <Border 
+                                StrokeShape="RoundRectangle 5,5,5,5"
+                                BackgroundColor="#FAFAA2"
+                                Stroke="DarkGray"
+                                Padding="3,3,3,3">
+                           <Border.Shadow>
+                              <Shadow Brush="Gray" Offset="5,5" Radius="20" Opacity="0.8"/>
+                           </Border.Shadow>
+                           <Label Text="{Binding Name}" TextColor="Black" FontSize="Medium"/>
+                        </Border>
+                     </Grid>
+                  </ViewCell>
+               </DataTemplate>
+            </ListView.ItemTemplate>
+         </ListView>
+      </Grid>
+
+   </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+             xmlns:local="clr-namespace:TrackEddi;assembly=TrackEddi"
+             x:DataType="local:SymbolChoosingPage" 
+             x:Class="TrackEddi.SymbolChoosingPage"
+             Title="Symbolauswahl"
+             x:Name="mypage">
+
+   <ContentPage.Content>
+      <AbsoluteLayout>
+
+         <Grid RowDefinitions="*" ColumnDefinitions="*"
+               AbsoluteLayout.LayoutBounds="0,0,1,1"
+               AbsoluteLayout.LayoutFlags="All">
+
+            <!-- mit HasUnevenRows="False" wird die Itemhöhe NICHT auf die ev. nötige Höhe angepasst -->
+            <ListView x:Name="ListViewSymbols" Grid.Row="0" Grid.Column="0"
+                      CachingStrategy="RecycleElement"
+                      android:ListView.IsFastScrollEnabled="true"
+                      Margin="0"
+                      BackgroundColor="White"
+                      SelectionMode="Single"
+                      HasUnevenRows="True"       
+                      VerticalScrollBarVisibility="Always"
+                      HorizontalScrollBarVisibility="Always"
+                      IsGroupingEnabled="True">
+               <ListView.GroupHeaderTemplate>
+                  <DataTemplate x:DataType="local:SymbolGroupList">
+                     <ViewCell>
+                        <VerticalStackLayout >
+                           <Border BackgroundColor="LightGray"
+                                  HorizontalOptions="Center"
+                                  VerticalOptions="Center"
+                                  Stroke="Blue"
+                                  Margin="3"
+                                  Padding="5">
+                              <Label Text="{Binding Groupname}" 
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="Center"
+                                     FontSize="Medium" 
+                                     FontAttributes="Bold" 
+                                     TextColor="Blue" 
+                                     Padding="10,5,10,5"/>
+                           </Border>
+                        </VerticalStackLayout>
+                     </ViewCell>
+                  </DataTemplate>
+               </ListView.GroupHeaderTemplate>
+
+               <ListView.ItemTemplate>
+                  <DataTemplate x:DataType="local:SymbolObjectItem">
+                     <ViewCell>
+                        <ScrollView Orientation="Horizontal" BackgroundColor="#80AFAFFF" Margin="3">
+                           <VerticalStackLayout>
+
+                              <Grid ColumnDefinitions="auto,auto" RowDefinitions="auto">
+                                 <ImageButton Source="{Binding Picture}" Style="{StaticResource MyImageButton}" 
+                                              HeightRequest="40"
+                                              WidthRequest="40"
+                                              Margin="5"
+                                              BorderColor="DarkGray"
+                                              BorderWidth="1"
+                                              Padding="1"/>
+
+                                 <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto">
+                                    <Label Grid.Row="0" Grid.Column="0" Text="{Binding Name}" TextColor="Black" FontSize="Medium" FontAttributes="Bold"/>
+                                    <Label Grid.Row="1" Grid.Column="0" Text="{Binding Group}" TextColor="Blue" FontSize="Small" FontAttributes="None"/>
+                                 </Grid>
+
+                                 <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="ChooseSymbolTapped" CommandParameter="{Binding .}"/>
+                                 </Grid.GestureRecognizers>
+                              </Grid>
+
+                           </VerticalStackLayout>
+                        </ScrollView>
+                     </ViewCell>
+                  </DataTemplate>
+               </ListView.ItemTemplate>
+            </ListView>
+
+         </Grid>
+         <ActivityIndicator x:Name="BusyIndicator" Style="{StaticResource MyActivityIndicator}"/>
+
+      </AbsoluteLayout>
+   </ContentPage.Content>
+</ContentPage>

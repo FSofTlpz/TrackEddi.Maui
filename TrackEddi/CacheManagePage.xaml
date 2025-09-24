@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fsoft="clr-namespace:FSofTUtils.OSInterface;assembly=FSofTUtils.OSInterface"
+             x:Class="TrackEddi.CacheManagePage"
+             x:Name="mypage"
+             Title="Cache-Management">
+   <ContentPage.Resources>
+      <ResourceDictionary>
+         <Style x:Key="HLine" TargetType="BoxView">
+            <Setter Property="BackgroundColor" Value="Red"/>
+            <Setter Property="HeightRequest" Value="5"/>
+            <Setter Property="Margin" Value="0"/>
+         </Style>
+         <Style x:Key="MyLabel" TargetType="Label">
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Grid.Column" Value="0"/>
+            <Setter Property="Margin" Value="5"/>
+         </Style>
+         <Style x:Key="MyLabel2" TargetType="Label">
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Grid.Column" Value="0"/>
+            <Setter Property="Margin" Value="15,5,5,5"/>
+         </Style>
+         <Style x:Key="MyMiniImageButton" TargetType="ImageButton">
+            <!--<Setter Property="WidthRequest" Value="30"/>
+            <Setter Property="HeightRequest" Value="30"/>-->
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="BorderColor" Value="DarkGray"/>
+            <Setter Property="BorderWidth" Value="1"/>
+            <Setter Property="BackgroundColor" Value="LightGray"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Shadow">
+               <Setter.Value>
+                  <Shadow Brush="Gray" Opacity="0.8" Radius="5" Offset="5,5" />
+               </Setter.Value>
+            </Setter>
+         </Style>
+
+
+      </ResourceDictionary>
+   </ContentPage.Resources>
+
+   <AbsoluteLayout>
+      <Grid RowDefinitions="Auto,Auto,*"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
+         <Grid 
+               RowDefinitions="Auto,Auto,Auto" 
+               ColumnDefinitions="Auto,*,Auto"
+               BackgroundColor="LightSalmon">
+
+            <Label Grid.Row="0" Grid.Column="0" Text="Pfad:" Style="{StaticResource MyLabel2}"/>
+            <ScrollView Grid.Row="0" Grid.Column="1" Orientation="Horizontal"
+                        VerticalOptions="Center">
+               <Label x:Name="lblPath" Text="Pfad:" Style="{StaticResource MyLabel2}"/>
+            </ScrollView>
+
+
+            <ImageButton x:Name="btnClearActualCache" Grid.Row="1" Grid.Column="0" 
+                            Margin="2,2,2,4"
+                            Source="delete.png" Style="{StaticResource MyMiniImageButton}" 
+                            Clicked="clearActualCache_Clicked"/>
+            <ScrollView Grid.Row="1" Grid.Column="1" Orientation="Horizontal"
+                        VerticalOptions="Center">
+               <Label x:Name="lblActualMapname" Style="{StaticResource MyLabel2}"/>
+            </ScrollView>
+            <Label x:Name="lblCachesizeAct" Grid.Row="1" Grid.Column="2" Style="{StaticResource MyLabel2}"/>
+
+            <ImageButton x:Name="btnClearAllCache" Grid.Row="2" Grid.Column="0" 
+                            Margin="2,2,2,4"
+                            Source="delete.png" Style="{StaticResource MyMiniImageButton}" 
+                            Clicked="clearAllCache_Clicked"/>
+            <Label Grid.Row="2" Grid.Column="1" Style="{StaticResource MyLabel2}" Text="gesamt:"/>
+            <Label x:Name="lblCachesizeAll" Grid.Row="2" Grid.Column="2" Style="{StaticResource MyLabel2}"/>
+         </Grid>
+
+         <BoxView Grid.Row="1" Grid.Column="0" Style="{StaticResource HLine}"/>
+
+         <Grid Grid.Row="2" Grid.Column="0" 
+               RowDefinitions="Auto,*" 
+               ColumnDefinitions="*"
+               BackgroundColor="LightYellow" >
+            <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource MyLabel}" Text="aktueller Cache:"/>
+            <ListView x:Name="lstCacheAct"
+                      Grid.Row="1" Grid.Column="0"
+                      CachingStrategy="RecycleElement"
+                      SelectionMode="Single"
+                      VerticalScrollBarVisibility="Always"
+                      SeparatorColor="Black">
+
+               <ListView.ItemTemplate>
+                  <DataTemplate>
+                     <ViewCell>
+                        <Grid RowDefinitions="*"
+                              ColumnDefinitions="30,*"
+                              BackgroundColor="#FFFFB1"
+                              Margin="0"
+                              Padding="2">
+                           <ImageButton Grid.Column="0" Grid.Row="0" Margin="2,2,2,4"
+                                        Source="delete.png" Style="{StaticResource MyMiniImageButton}" 
+                                        Clicked="clearCacheList_Tapped" CommandParameter="{Binding .}"/>
+                           <ScrollView Grid.Column="1" Grid.Row="0" Orientation="Horizontal" 
+                                       VerticalOptions="Center"
+                                       Margin="2">
+                              <Label Text="{Binding .}" Style="{StaticResource MyLabel2}"/>
+                           </ScrollView>
+                        </Grid>
+                     </ViewCell>
+                  </DataTemplate>
+               </ListView.ItemTemplate>
+            </ListView>
+         </Grid>
+
+      </Grid>
+      <ActivityIndicator x:Name="BusyIndicator" Style="{StaticResource MyActivityIndicator}"/>
+   </AbsoluteLayout>
+</ContentPage>

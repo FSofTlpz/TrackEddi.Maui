@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ctrl="clr-namespace:FSofTUtils.OSInterface.Control"
+             x:Class="FSofTUtils.OSInterface.Control.TreeViewNode"
+             x:DataType="ctrl:TreeViewNode"
+             x:Name="this" 
+             Margin="0"
+             Padding="0">
+
+   <StackLayout HorizontalOptions="FillAndExpand"
+                   VerticalOptions="Start"
+                   Orientation="Vertical"
+                   Margin="0"
+                   Padding="0">
+
+      <StackLayout Orientation="Horizontal"
+                      BackgroundColor="{Binding BackcolorNode, Source={x:Reference this}}"
+                      Margin="0" 
+                      Padding="0"
+                      Spacing="0">
+
+         <Image x:Name="image"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   Margin="5,0,0,0"
+                   WidthRequest="{Binding FontSize, Source={x:Reference this}}"
+                   HeightRequest="{Binding FontSize, Source={x:Reference this}}">
+            <Image.GestureRecognizers>
+               <TapGestureRecognizer Tapped="ImageTapGestureRecognizer_SingleTapped"
+                                        NumberOfTapsRequired="1" />
+            </Image.GestureRecognizers>
+         </Image>
+
+         <CheckBox x:Name="checkbox"
+                      VerticalOptions="Center"
+                      CheckedChanged="checkbox_CheckedChanged"
+                      Color="Black"/>
+
+         <Border Padding="5,0,5,0"
+                   BackgroundColor="{Binding BackcolorText, Source={x:Reference this}}"
+                   Stroke="{Binding BackcolorText, Source={x:Reference this}}"
+                   HorizontalOptions="FillAndExpand"
+                   Margin="0">
+            <Label x:Name="labelText"
+                      HorizontalOptions="Start"
+                      VerticalOptions="Center"
+                      TextColor="{Binding Textcolor, Source={x:Reference this}}"
+                      Text="{Binding Text, Source={x:Reference this}}" 
+                      FontSize="{Binding FontSize, Source={x:Reference this}}" />
+            <Border.GestureRecognizers>
+               <!-- Swipe fkt. natürlich nicht mehr, wenn sich der TreeView in einer ScrollView befindet. -->
+               <!--<SwipeGestureRecognizer Direction="Right"
+                                          Swiped="FrameSwipeGestureRecognizer_Swiped"/>-->
+               <TapGestureRecognizer Tapped="FrameTapGestureRecognizer_SingleTapped"
+                                        NumberOfTapsRequired="1" />
+               <TapGestureRecognizer Tapped="FrameTapGestureRecognizer_DoubleTapped"
+                                        NumberOfTapsRequired="2" />
+            </Border.GestureRecognizers>
+         </Border>
+      </StackLayout>
+
+      <StackLayout x:Name="childrenStackLayout"
+                      Margin="{Binding ChildNodeIndentMargin, Source={x:Reference this}}"
+                      Padding="0"
+                      Spacing="0">
+         <!--<Label Text="aaa"/>
+            <Label Text="bbb123"/>-->
+      </StackLayout>
+   </StackLayout>
+</ContentView>

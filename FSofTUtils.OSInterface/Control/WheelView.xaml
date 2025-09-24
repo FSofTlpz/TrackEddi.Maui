@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ctrl="clr-namespace:FSofTUtils.OSInterface.Control"
+             x:DataType="ctrl:WheelView"
+             x:Class="FSofTUtils.OSInterface.Control.WheelView"
+             x:Name="this">
+
+   <ContentView.Resources>
+      <ResourceDictionary>
+         <Style x:Key="templateWheelBorder" TargetType="Border">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="HorizontalOptions" Value="Fill"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="StrokeThickness" Value="1"/>
+            <Setter Property="BackgroundColor" Value="{Binding ItemColor, Source={x:Reference this}}"/>
+            <Setter Property="StrokeShape">
+               <Setter.Value>
+                  <RoundRectangle CornerRadius="5,0,0,5" />
+               </Setter.Value>
+            </Setter>
+            <Setter Property="Background">
+               <Setter.Value>
+                  <LinearGradientBrush EndPoint="0,1">
+                     <GradientStop Color="{Binding ItemColor, Source={x:Reference this}}" Offset="0.0" />
+                     <GradientStop Color="{Binding ItemColorCenter, Source={x:Reference this}}" Offset="0.5" />
+                     <GradientStop Color="{Binding ItemColor, Source={x:Reference this}}" Offset="1.0" />
+                  </LinearGradientBrush>
+               </Setter.Value>
+            </Setter>
+         </Style>
+
+         <Style x:Key="templateWheelLabel" TargetType="Label">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="TextColor" Value="{Binding ItemTextColor, Source={x:Reference this}}"/>
+            <Setter Property="FontSize" Value="{Binding ItemFontSize, Source={x:Reference this}}"/>
+            <Setter Property="Text" Value="{Binding ., StringFormat='{0:D2}'}"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+         </Style>
+      </ResourceDictionary>
+   </ContentView.Resources>
+
+   <ContentView.Content>
+      <AbsoluteLayout>
+         <!-- Das Layout nimmt die gesamte Fläche ein. -->
+         <StackLayout VerticalOptions="Fill"
+                      Margin="0"
+                      Padding="0"
+                      AbsoluteLayout.LayoutBounds="0,0,1,1"
+                      AbsoluteLayout.LayoutFlags="SizeProportional">
+
+            <!-- Nur zur Ermittlung der Itemhöhe beim Loaded-Event! -->
+            <Border x:Name="testItem" 
+                    Style="{StaticResource templateWheelBorder}"  
+                    Loaded="testItem_Loaded">
+               <Label x:Name="lblTest" Style="{StaticResource templateWheelLabel}"/>
+            </Border>
+
+            <ctrl:CarouselViewExt x:Name="Wheel"
+                                  Margin="1,0,0,0"
+                                  HorizontalOptions="Fill"
+                                  VerticalOptions="FillAndExpand"
+                                  IsScrollAnimated="True"
+                                  Loop="{Binding Loop, Mode=TwoWay, Source={x:Reference this}}">
+
+               <CarouselView.Background>
+                  <LinearGradientBrush EndPoint="0,1">
+                     <GradientStop Color="LightGray" Offset="0.0" />
+                     <GradientStop Color="Gray" Offset="0.5" />
+                     <GradientStop Color="LightGray" Offset="1.0" />
+                  </LinearGradientBrush>
+               </CarouselView.Background>
+
+               <CarouselView.ItemsLayout>
+                  <LinearItemsLayout Orientation="Vertical"
+                                     SnapPointsType="Mandatory"
+                                     SnapPointsAlignment="Center"
+                                     ItemSpacing="0"/>
+               </CarouselView.ItemsLayout>
+
+               <CarouselView.ItemTemplate>
+                  <DataTemplate x:DataType="ctrl:WheelView">
+                     <Border Margin="0"
+                             Padding="0"
+                             HorizontalOptions="Fill"
+                             VerticalOptions="Center"
+                             StrokeThickness="1"
+                             BackgroundColor="{Binding ItemColor, Source={x:Reference this}}"
+                             StrokeShape="RoundRectangle 5,0,0,5">
+                        <Border.Background>
+                           <LinearGradientBrush EndPoint="0,1">
+                              <GradientStop Color="{Binding ItemColor, Source={x:Reference this}}" Offset="0.0" />
+                              <GradientStop Color="{Binding ItemColorCenter, Source={x:Reference this}}" Offset="0.5" />
+                              <GradientStop Color="{Binding ItemColor, Source={x:Reference this}}" Offset="1.0" />
+                           </LinearGradientBrush>
+                        </Border.Background>
+
+                        <Label x:DataType="{x:Null}"
+                               Margin="0"
+                               Padding="5"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               TextColor="{Binding ItemTextColor, Source={x:Reference this}}"
+                               FontSize="{Binding ItemFontSize, Source={x:Reference this}}"
+                               Text="{Binding ., StringFormat='{0:D2}'}" />
+
+                     </Border>
+                  </DataTemplate>
+               </CarouselView.ItemTemplate>
+
+            </ctrl:CarouselViewExt>
+
+         </StackLayout>
+
+         <!-- unterschiedlich transparente Fläche über das gesamte Layout legen
+              Pos. und Größe von Bound ist relativ angegeben -->
+         <BoxView AbsoluteLayout.LayoutBounds="0, 0, 1, 1" 
+                  AbsoluteLayout.LayoutFlags="All">
+            <BoxView.Background>
+               <LinearGradientBrush EndPoint="0,1">
+                  <GradientStop Color="#A0E0E0E0" Offset="0.0" />
+                  <GradientStop Color="#00FFFFFF" Offset="0.5" />
+                  <GradientStop Color="#A0A0A0A0" Offset="1.0" />
+               </LinearGradientBrush>
+            </BoxView.Background>
+         </BoxView>
+      </AbsoluteLayout>
+   </ContentView.Content>
+</ContentView>

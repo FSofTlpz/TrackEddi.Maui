@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>GarminCore</RootNamespace>
+    <Deterministic>false</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;SKIA</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;SKIA</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="ms\**" />
+    <Compile Remove="Stuff\**" />
+    <EmbeddedResource Remove="ms\**" />
+    <EmbeddedResource Remove="Stuff\**" />
+    <None Remove="ms\**" />
+    <None Remove="Stuff\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="!clear.cmd" />
+    <None Remove="!notes.txt" />
+    <None Remove=".gitignore" />
+    <None Remove="App.config" />
+    <None Remove="ClipperLib\clipper_ver6.4.zip" />
+    <None Remove="License.txt" />
+    <None Remove="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.9" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.9" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Win2Skia\Win2Skia.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <AssemblyTitle>GarminCore-DLL</AssemblyTitle>
+    <Description>.NET-Bibliothek zur Verwendung von Garmin-Dateien</Description>
+    <Company>FSofT</Company>
+    <Product>Garmin-Interface</Product>
+    <Copyright>Copyright © FSofT 2011</Copyright>
+    <InformationalVersion>2.8.2024</InformationalVersion>
+    <AssemblyVersion>1.0.%2a</AssemblyVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,434 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TrackEddi;assembly=TrackEddi"
+             xmlns:skia="clr-namespace:SkiaSharp.Views.Maui.Controls;assembly=SkiaSharp.Views.Maui.Controls"
+             xmlns:smap="clr-namespace:SpecialMapCtrl;assembly=SpecialMapCtrl.Skia"
+             xmlns:tt="clr-namespace:FSofTUtils.OSInterface.Touch;assembly=FSofTUtils.OSInterface"
+             x:DataType="local:MainPage" 
+             x:Class="TrackEddi.MainPage"
+             Title="TrackEddi"
+             x:Name="this">
+
+   <ContentPage.Resources>
+      <ResourceDictionary>
+         <Style TargetType="Grid" x:Key="MainGridStyle">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+               <VisualStateGroupList>
+                  <VisualStateGroup>
+                     <VisualState x:Name="Portrait">
+                        <VisualState.StateTriggers>
+                           <OrientationStateTrigger Orientation="Portrait" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                           <Setter Property="RowDefinitions" Value="auto,*,auto" />
+                           <Setter Property="ColumnDefinitions" Value="*" />
+                        </VisualState.Setters>
+                     </VisualState>
+                     <VisualState x:Name="Landscape">
+                        <VisualState.StateTriggers>
+                           <OrientationStateTrigger Orientation="Landscape" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                           <Setter Property="RowDefinitions" Value="*" />
+                           <Setter Property="ColumnDefinitions" Value="auto,*,auto" />
+                        </VisualState.Setters>
+                     </VisualState>
+                  </VisualStateGroup>
+               </VisualStateGroupList>
+            </Setter>
+         </Style>
+
+         <Style TargetType="Grid" x:Key="MainCellRowCol">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+               <VisualStateGroupList>
+                  <VisualStateGroup>
+                     <VisualState x:Name="Portrait">
+                        <VisualState.StateTriggers>
+                           <OrientationStateTrigger Orientation="Portrait" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                           <Setter Property="Grid.Row" Value="1" />
+                           <Setter Property="Grid.Column" Value="0" />
+                        </VisualState.Setters>
+                     </VisualState>
+                     <VisualState x:Name="Landscape">
+                        <VisualState.StateTriggers>
+                           <OrientationStateTrigger Orientation="Landscape" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                           <Setter Property="Grid.Row" Value="0" />
+                           <Setter Property="Grid.Column" Value="1" />
+                        </VisualState.Setters>
+                     </VisualState>
+                  </VisualStateGroup>
+               </VisualStateGroupList>
+            </Setter>
+         </Style>
+
+         <Style TargetType="ScrollView" x:Key="ButtonCellRowCol">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+               <VisualStateGroupList>
+                  <VisualStateGroup>
+                     <VisualState x:Name="Portrait">
+                        <VisualState.StateTriggers>
+                           <OrientationStateTrigger Orientation="Portrait" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                           <Setter Property="Grid.Row" Value="2" />
+                           <Setter Property="Grid.Column" Value="0" />
+                        </VisualState.Setters>
+                     </VisualState>
+                     <VisualState x:Name="Landscape">
+                        <VisualState.StateTriggers>
+                           <OrientationStateTrigger Orientation="Landscape" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                           <Setter Property="Grid.Row" Value="0" />
+                           <Setter Property="Grid.Column" Value="2" />
+                        </VisualState.Setters>
+                     </VisualState>
+                  </VisualStateGroup>
+               </VisualStateGroupList>
+            </Setter>
+         </Style>
+
+         <Style x:Key="MyBorder" BasedOn="{StaticResource MyRoundShadowedBorder}" TargetType="Border">
+            <Setter Property="HorizontalOptions" Value="Start"/>
+            <Setter Property="VerticalOptions" Value="Start"/>
+         </Style>
+      </ResourceDictionary>
+   </ContentPage.Resources>
+
+   <ContentPage.ToolbarItems>
+      <ToolbarItem 
+            Text="Karte auswählen"
+            Order="Secondary"
+            Priority="1"
+            Clicked="ToolbarItem_ChooseMap_Clicked" />
+      <ToolbarItem 
+            Text="Karte neu laden"
+            Order="Secondary"
+            Priority="2"
+            Clicked="ToolbarItem_ReloadMap_Clicked" />
+
+      <ToolbarItem 
+            Text="⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"
+            Order="Secondary"
+            Priority="3"/>
+
+      <ToolbarItem 
+            Text="Datei hinzufügen"
+            Order="Secondary"
+            Priority="4"
+            Clicked="ToolbarItem_GPXAppendClicked" />
+      <ToolbarItem 
+            Text="Datei öffnen"
+            Order="Secondary"
+            Priority="5"
+            Clicked="ToolbarItem_GPXOpen_Clicked" />
+      <ToolbarItem 
+            Text="Daten speichern als ..."
+            Order="Secondary"
+            Priority="6"
+            Clicked="ToolbarItem_SaveAsClicked" />
+      <ToolbarItem 
+            Text="Daten in Einzeldateien speichern ..."
+            Order="Secondary"
+            Priority="7"
+            Clicked="ToolbarItem_SaveAsMultiClicked" />
+
+      <ToolbarItem 
+            Text="⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"
+            Order="Secondary"
+            Priority="8"/>
+
+      <ToolbarItem 
+            Text="OSM-Suche"
+            Order="Secondary"
+            Priority="9"
+            Clicked="ToolbarItem_OsmSearchClicked" />
+      <ToolbarItem 
+            Text="Ortsliste"
+            Order="Secondary"
+            Priority="10"
+            Clicked="ToolbarItem_GoToClicked" />
+      <ToolbarItem 
+            Text="Track-/Markerliste"
+            Order="Secondary"
+            Priority="11"
+            Clicked="ToolbarItem_GpxContent_Clicked" />
+
+      <ToolbarItem 
+            Text="⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"
+            Order="Secondary"
+            Priority="12"/>
+
+      <ToolbarItem 
+            Text="GPX-Dateien für Bildausschnitt suchen"
+            Order="Secondary"
+            Priority="13"
+            Clicked="ToolbarItem_GPXSearch" />
+
+      <ToolbarItem 
+            Text="Suche abbrechen"
+            Order="Secondary"
+            Priority="14"
+            Clicked="ToolbarItem_GPXCancelSearch" />
+
+      <ToolbarItem 
+            Text="letzte GPX-Datei-Suche"
+            Order="Secondary"
+            Priority="15"
+            Clicked="ToolbarItem_GPXLastSearch" />
+
+      <ToolbarItem 
+            Text="⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"
+            Order="Secondary"
+            Priority="16"/>
+
+      <ToolbarItem 
+            Text="Kompass ein/aus"
+            Order="Secondary"
+            Priority="17"
+            Clicked="ToolbarItem_Compass_Clicked" />
+      <ToolbarItem 
+            Text="aktuelle Position"
+            Order="Secondary"
+            Priority="18"
+            Clicked="ToolbarItem_LastLocation" />
+      <ToolbarItem 
+            Text="global navigation satellite system"
+            Order="Secondary"
+            Priority="19"
+            Clicked="ToolbarItem_GNSS" />
+
+      <ToolbarItem 
+            Text="⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"
+            Order="Secondary"
+            Priority="20"/>
+
+      <ToolbarItem 
+            Text="konfigurieren"
+            Order="Secondary"
+            Priority="21"
+            Clicked="ToolbarItem_Config_Clicked" />
+      <ToolbarItem 
+            Text="Kartencache löschen"
+            Order="Secondary"
+            Priority="22"
+            Clicked="ToolbarItem_DeleteCache_Clicked" />
+      <ToolbarItem 
+            Text="Hinweise"
+            Order="Secondary"
+            Priority="23"
+            Clicked="ToolbarItem_Help_Clicked" />
+   </ContentPage.ToolbarItems>
+
+   <AbsoluteLayout>
+      <Grid x:Name="pagegrid" 
+            Style="{StaticResource MainGridStyle}"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="All">
+
+         <StackLayout x:Name="ctrls4Debug" Grid.Row="0" Grid.Column="0"
+                      Orientation="{Binding StackOrientationHorizontal4Portrait, Source={x:Reference this}}"
+                      IsVisible="False">
+
+            <ImageButton
+                x:Name="buttonTestA"
+                Source="buttonmap.png"
+                WidthRequest="50"
+               HeightRequest="50"
+                BackgroundColor="Lavender"
+                BorderColor="Green"
+                BorderWidth="5"
+               Padding="1"
+                Clicked="buttonTestA_Clicked"/>
+
+            <ImageButton
+                x:Name="buttonTestB"
+                Source="buttonmap.png"
+                WidthRequest="50"
+               HeightRequest="50"
+                BackgroundColor="Yellow"
+                BorderColor="Green"
+                BorderWidth="5"
+                CornerRadius="10"
+               Padding="5"
+                Clicked="buttonTestB_Clicked"/>
+
+            <Button 
+                x:Name="buttonTestC"
+                Text="C"
+                WidthRequest="50"
+                Clicked="buttonTestC_Clicked"/>
+
+            <BoxView 
+                x:Name="statusLed"
+                BackgroundColor="BlanchedAlmond"></BoxView>
+
+            <StackLayout 
+                Orientation="Vertical">
+               <Label 
+                    x:Name="labelPos"
+                    BackgroundColor="Wheat"
+                    LineBreakMode="NoWrap"
+                    HorizontalOptions="StartAndExpand"/>
+
+               <Label 
+                    x:Name="labelX" 
+                    LineBreakMode="NoWrap"
+                    HorizontalOptions="StartAndExpand" BackgroundColor="#FFC800"/>
+
+               <Label 
+                    x:Name="labelInfo"
+                    BackgroundColor="#86FF00" 
+                    LineBreakMode="NoWrap"
+                    HorizontalOptions="StartAndExpand"/>
+            </StackLayout>
+         </StackLayout>
+
+         <Grid Style="{StaticResource MainCellRowCol}"
+               RowDefinitions="*,Auto" ColumnDefinitions="*"
+               BackgroundColor="Black">
+
+            <smap:SpecialMapCtrl x:Name="map"
+                                 Grid.Row="0"
+                                 HorizontalOptions="Fill"
+                                 VerticalOptions="Fill"
+                                 EnableTouchEvents="False" 
+                                 IsVisible="False">
+               <!-- wenn USESTDGESTURES in MainPage_Touch.cs: -->
+               <smap:SpecialMapCtrl.GestureRecognizers>
+                  <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                  <PinchGestureRecognizer PinchUpdated="PinchGestureRecognizer_PinchUpdated"/>
+                  <PanGestureRecognizer PanUpdated="PanGestureRecognizer_PanUpdated"/>
+               </smap:SpecialMapCtrl.GestureRecognizers>
+               <!-- sonst: -->
+               <!--<skia:SKCanvasView.Effects>
+                  <tt:TouchEffect Capture="True" TouchAction="mapTouchAction"/>
+               </skia:SKCanvasView.Effects>-->
+            </smap:SpecialMapCtrl>
+
+            <ScrollView Orientation="Vertical" x:Name="startInfo">
+               <VerticalStackLayout>
+                  <ScrollView Orientation="Horizontal">
+                     <Editor x:Name="startInfoArea"
+                             BackgroundColor="Black"
+                             TextColor="White"
+                             IsSpellCheckEnabled="False"
+                             IsReadOnly="True"
+                             AutoSize="TextChanges"/>
+                  </ScrollView>
+                  <Label x:Name="StartInfoEnd" Text="" HeightRequest="5" Margin="0"/>
+               </VerticalStackLayout>
+            </ScrollView>
+
+         </Grid>
+
+         <ScrollView x:Name="mainMenu" Style="{StaticResource ButtonCellRowCol}"
+                     Orientation="{Binding ScrollOrientationHorizontal4Portrait, Source={x:Reference this}}"
+                     IsVisible="False">
+
+            <StackLayout x:Name="MainMenuButtonContainer"
+                        Orientation="{Binding StackOrientationHorizontal4Portrait, Source={x:Reference this}}">
+
+               <ImageButton Source="buttonmap.png" Style="{StaticResource MyImageButton}" Clicked="ChooseMap_Clicked"/>
+               <ImageButton Source="buttonzoomin.png" Style="{StaticResource MyImageButton}" Clicked="ZoomIn_Clicked"/>
+               <ImageButton Source="buttonzoomout.png" Style="{StaticResource MyImageButton}" Clicked="ZoomOut_Clicked"/>
+               <ImageButton Source="buttonlist.png" Style="{StaticResource MyImageButton}" Clicked="TrackMarkerList_Clicked"/>
+
+               <ImageButton x:Name="ButtonTap1" IsVisible="true" Source="buttontap1pressed.png" Style="{StaticResource MyImageButton}" Clicked="Tap_Clicked"/>
+               <ImageButton x:Name="ButtonTap2" IsVisible="false" Source="buttontap2pressed.png" Style="{StaticResource MyImageButton}" Clicked="Tap_Clicked"/>
+               <ImageButton x:Name="ButtonTap3" IsVisible="false" Source="buttontap3pressed.png" Style="{StaticResource MyImageButton}" Clicked="Tap_Clicked"/>
+
+               <ImageButton x:Name="ButtonGeoLocationStart" IsVisible="true" Source="buttonlocation.png" Style="{StaticResource MyImageButton}" Clicked="GeoLocationStart_Clicked"/>
+               <ImageButton x:Name="ButtonGeoLocationStop" IsVisible="false" Source="buttonlocationpressed.png" Style="{StaticResource MyImageButton}" Clicked="GeoLocationStop_Clicked"/>
+               <ImageButton x:Name="ButtonGeoLocationWithoutCenter" IsVisible="false" Source="buttonlocationwithoutcenter.png" Style="{StaticResource MyImageButton}" Clicked="GeoLocationWithoutCenter_Clicked"/>
+               <ImageButton x:Name="ButtonTrackingStart" IsVisible="true" Source="buttontracking.png" Style="{StaticResource MyImageButton}" Clicked="TrackingStart_Clicked"/>
+               <ImageButton x:Name="ButtonTrackingStop" IsVisible="false" Source="buttontrackingpressed.png" Style="{StaticResource MyImageButton}" Clicked="TrackingStop_Clicked"/>
+               <ImageButton x:Name="ButtonTrackingPause" IsVisible="false" Source="buttontrackingpause.png" Style="{StaticResource MyImageButton}" Clicked="TrackingPause_Clicked"/>
+
+               <StackLayout Orientation="Vertical">
+                  <Label x:Name="TilesInWork" Text="" TextColor="DarkRed" Padding="3" VerticalOptions="Center" IsVisible="False"/>
+                  <Label x:Name="GpxSearch" Text="Gpx-Suche:" TextColor="DarkBlue" Padding="3" VerticalOptions="Center" IsVisible="False"/>
+                  <Label x:Name="GpxSearchCount" Text="" TextColor="DarkBlue" Padding="3" VerticalOptions="Center" IsVisible="False"/>
+               </StackLayout>
+
+               <!--Start Buttons Editiermodus-->
+
+               <Border x:Name="EditButtonsGroup"
+                       Stroke="DarkGray"
+                       BackgroundColor="#FFFFB0B0"
+                       Padding="5,1,5,1"
+                       Margin="0"
+                       Style="{StaticResource MyBorder}">
+                  <StackLayout Orientation="{Binding StackOrientationHorizontal4Portrait, Source={x:Reference this}}">
+
+                     <StackLayout Orientation="Vertical">
+                        <Label x:Name="EditModeText"
+                               HorizontalOptions="Center"
+                               TextColor="Blue"/>
+                        <StackLayout 
+                                 Padding="0"
+                                 Margin="0"
+                                 Orientation="{Binding StackOrientationHorizontal4Portrait, Source={x:Reference this}}">
+                           <ImageButton x:Name="EditModeNothing" IsVisible="false" Source="buttonempty.png" Style="{StaticResource MyImageButton}" Clicked="EditModeNothing_Clicked"/>
+                           <ImageButton x:Name="EditModeNothingPressed" IsVisible="true" Source="buttonemptypressed.png" Style="{StaticResource MyImageButton}" Clicked="EditModeNothing_Clicked"/>
+
+                           <ImageButton x:Name="EditModeMarkerSet" IsVisible="true" Source="buttonmarkerset.png" Style="{StaticResource MyImageButton}" Clicked="EditModeMarkerSet_Clicked"/>
+                           <ImageButton x:Name="EditModeMarkerSetPressed" IsVisible="false" Source="buttonmarkersetpressed.png" Style="{StaticResource MyImageButton}" Clicked="EditModeMarkerSet_Clicked"/>
+
+                           <ImageButton x:Name="EditModeTrackDraw" IsVisible="true" Source="buttontrackdraw.png" Style="{StaticResource MyImageButton}" Clicked="EditModeTrackDraw_Clicked"/>
+                           <ImageButton x:Name="EditModeTrackDrawPressed" IsVisible="false" Source="buttontrackdrawpressed.png" Style="{StaticResource MyImageButton}" Clicked="EditModeTrackDraw_Clicked"/>
+
+                           <ImageButton x:Name="EditModeTrackPointremove" IsVisible="true" Source="buttontrackpointremove.png" Style="{StaticResource MyImageButton}" Clicked="EditModeTrackPointremove_Clicked"/>
+                           <ImageButton x:Name="EditModeTrackPointremovePressed" IsVisible="false" Source="buttontrackpointremovepressed.png" Style="{StaticResource MyImageButton}" Clicked="EditModeTrackPointremove_Clicked"/>
+
+                           <ImageButton x:Name="EditModeTrackSplit" IsVisible="true" Source="buttontracksplit.png" Style="{StaticResource MyImageButton}" Clicked="EditModeTrackSplit_Clicked"/>
+                           <ImageButton x:Name="EditModeTrackSplitPressed" IsVisible="false" Source="buttontracksplitpressed.png" Style="{StaticResource MyImageButton}" Clicked="EditModeTrackSplit_Clicked"/>
+
+                           <ImageButton x:Name="EditModeTrackConcat" IsVisible="true" Source="buttontrackconcat.png" Style="{StaticResource MyImageButton}" Clicked="EditModeTrackConcat_Clicked"/>
+                           <ImageButton x:Name="EditModeTrackConcatPressed" IsVisible="false" Source="buttontrackconcatpressed.png" Style="{StaticResource MyImageButton}" Clicked="EditModeTrackConcat_Clicked"/>
+                        </StackLayout>
+                     </StackLayout>
+                     <Border x:Name="ExtEditButtons"
+                             Stroke="DarkGray"
+                             BackgroundColor="#80FFFFFF"
+                             Padding="3"
+                             Margin="5"
+                             Style="{StaticResource MyBorder}">
+                        <StackLayout Orientation="{Binding StackOrientationHorizontal4Portrait, Source={x:Reference this}}">
+                           <ImageButton x:Name="ButtonEditTarget" Source="target.png" 
+                                        Style="{StaticResource MyImageButton2}" Clicked="ButtonEditTarget_Clicked"/>
+                           <ImageButton x:Name="ButtonEditMinus" Source="minus.png" 
+                                        Style="{StaticResource MyImageButton2}" Clicked="ButtonEditMinus_Clicked"/>
+                           <ImageButton x:Name="ButtonEditEnd" Source="ok.png" 
+                                        Style="{StaticResource MyImageButton2}" Clicked="ButtonEditEnd_Clicked"/>
+                           <ImageButton x:Name="ButtonEditCancel" Source="cancel.png" 
+                                        Style="{StaticResource MyImageButton2}" Clicked="ButtonEditCancel_Clicked"/>
+                        </StackLayout>
+                     </Border>
+
+                     <Label x:Name="EditInfoText"
+                            VerticalOptions="Center"
+                            HorizontalOptions="Start"
+                            TextColor="Blue"
+                            BackgroundColor="White"
+                            Padding="5"/>
+                  </StackLayout>
+               </Border>
+
+               <!--Ende Buttons Editiermodus-->
+
+            </StackLayout>
+         </ScrollView>
+
+      </Grid>
+
+      <ActivityIndicator x:Name="BusyIndicator" Style="{StaticResource MyActivityIndicator}"/>
+
+   </AbsoluteLayout>
+
+</ContentPage>

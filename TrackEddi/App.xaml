@@ -1,0 +1,107 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TrackEddi"
+             x:Class="TrackEddi.App">
+   <Application.Resources>
+      <ResourceDictionary>
+         <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+            <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+         </ResourceDictionary.MergedDictionaries>
+
+         <Style x:Key="MyActivityIndicator" TargetType="ActivityIndicator">
+            <Setter Property="IsRunning" Value="False"/>
+            <Setter Property="Color" Value="#FF0000"/>
+            <Setter Property="BackgroundColor" Value="#00FFFFFF"/>
+            <Setter Property="AbsoluteLayout.LayoutBounds" Value="0.5, 0.5, -1, -1"/>
+            <Setter Property="AbsoluteLayout.LayoutFlags" Value="PositionProportional"/>
+         </Style>
+
+         <Style x:Key="MyStdButton" TargetType="Button">
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="BackgroundColor" Value="Blue"/>
+            <Setter Property="Margin" Value="5"/>
+         </Style>
+
+         <Style x:Key="MyStdShadowedButton" TargetType="Button">
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="BackgroundColor" Value="Blue"/>
+            <Setter Property="Shadow">
+               <Setter.Value>
+                  <Shadow Brush="Gray" Opacity="0.8" Radius="20" Offset="5,5" />
+               </Setter.Value>
+            </Setter>
+         </Style>
+
+         <Style x:Key="MyImageButton" TargetType="ImageButton">
+            <Setter Property="WidthRequest" Value="45"/>
+            <Setter Property="HeightRequest" Value="45"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="BorderColor" Value="Black"/>
+            <Setter Property="BackgroundColor" Value="LightGray"/>
+            <Setter Property="CornerRadius" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+         </Style>
+
+         <Style x:Key="MyImageButton2" TargetType="ImageButton">
+            <Setter Property="WidthRequest" Value="45"/>
+            <Setter Property="HeightRequest" Value="45"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="BorderColor" Value="Red"/>
+            <Setter Property="BorderWidth" Value="2"/>
+            <Setter Property="BackgroundColor" Value="LightSalmon"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Margin" Value="3"/>
+            <Setter Property="Padding" Value="8"/>
+         </Style>
+
+         <Style x:Key="MyMiniImageButton" TargetType="ImageButton">
+            <!--<Setter Property="WidthRequest" Value="30"/>
+            <Setter Property="HeightRequest" Value="30"/>-->
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="BorderColor" Value="DarkGray"/>
+            <Setter Property="BorderWidth" Value="1"/>
+            <Setter Property="BackgroundColor" Value="LightGray"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="1"/>
+         </Style>
+
+         <Style x:Key="MyMiniColorButton" TargetType="Button">
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="BorderColor" Value="Black"/>
+            <Setter Property="BorderWidth" Value="1"/>
+            <Setter Property="BackgroundColor" Value="LightGray"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Margin" Value="1"/>
+         </Style>
+
+         <Style x:Key="MyRoundShadowedBorder" TargetType="Border">
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="BackgroundColor" Value="LightGray"/>
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="StrokeShape" Value="RoundRectangle 5,5,5,5"/>
+            <Setter Property="Shadow">
+               <Setter.Value>
+                  <Shadow Brush="Gray" Opacity="0.8" Radius="20" Offset="5,5" />
+               </Setter.Value>
+            </Setter>
+
+         </Style>
+
+         <Style x:Key="HLine" TargetType="BoxView">
+            <Setter Property="BackgroundColor" Value="Black"/>
+            <Setter Property="HeightRequest" Value="1"/>
+            <Setter Property="Margin" Value="0,0,0,0"/>
+         </Style>
+
+      </ResourceDictionary>
+   </Application.Resources>
+</Application>
